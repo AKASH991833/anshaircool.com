@@ -142,11 +142,14 @@
                 <h2>Admin Profile</h2>
                 <form id="profileForm">
                     <div class="two-col">
-                        <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
-                        <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="6"></div>
+                        <div class="form-group"><label><i class="fas fa-user"></i> Username</label><input type="text" id="adminUsername" required minlength="3"></div>
+                        <div class="form-group"><label><i class="fas fa-lock"></i> Current Password</label><input type="password" id="currentPassword" required></div>
                     </div>
-                    <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirmPassword" required></div>
-                    <button type="submit" class="btn" style="width:auto;padding:0.75rem 2rem;"><i class="fas fa-key"></i> Change Password</button>
+                    <div class="two-col">
+                        <div class="form-group"><label><i class="fas fa-key"></i> New Password</label><input type="password" id="newPassword" required minlength="6"></div>
+                        <div class="form-group"><label><i class="fas fa-check-circle"></i> Confirm New Password</label><input type="password" id="confirmPassword" required></div>
+                    </div>
+                    <button type="submit" class="btn" style="width:auto;padding:0.75rem 2rem;"><i class="fas fa-save"></i> Save Changes</button>
                 </form>
             </div>
             <div class="settings-section" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);">
@@ -507,23 +510,33 @@
         });
 
         // ======== ADMIN PROFILE ========
+        // Set defaults
+        if (!localStorage.getItem('admin_password')) localStorage.setItem('admin_password', 'admin123');
+        if (!localStorage.getItem('admin_username')) localStorage.setItem('admin_username', 'admin');
+
+        // Load saved username
+        document.getElementById('adminUsername').value = localStorage.getItem('admin_username') || 'admin';
+
         document.getElementById('profileForm').addEventListener('submit', (e) => {
             e.preventDefault();
+            const newUsername = document.getElementById('adminUsername').value.trim();
             const current = document.getElementById('currentPassword').value;
             const newPw = document.getElementById('newPassword').value;
             const confirm = document.getElementById('confirmPassword').value;
-            const saved = localStorage.getItem('admin_password') || 'admin123';
-            if (current !== saved) { alert('Current password is incorrect!'); return; }
+            const savedPw = localStorage.getItem('admin_password') || 'admin123';
+
+            if (!newUsername) { alert('Username cannot be empty!'); return; }
+            if (current !== savedPw) { alert('Current password is incorrect!'); return; }
             if (newPw !== confirm) { alert('New passwords do not match!'); return; }
             if (newPw.length < 6) { alert('Password must be at least 6 characters!'); return; }
+
+            localStorage.setItem('admin_username', newUsername);
             localStorage.setItem('admin_password', newPw);
             document.getElementById('profileForm').reset();
-            alert('Password changed successfully!');
+            document.getElementById('adminUsername').value = newUsername;
+            document.getElementById('currentPassword').value = '';
+            alert('Username & password updated successfully!');
         });
-
-        // Modify login script to use saved password
-        const originalLogin = localStorage.getItem('admin_password');
-        if (!originalLogin) localStorage.setItem('admin_password', 'admin123');
 
         function logActivity(msg) {
             const logs = JSON.parse(localStorage.getItem('transparentdb_activity') || '[]');

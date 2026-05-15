@@ -81,22 +81,26 @@
     </div>
     
     <script>
+        // Ensure defaults exist
+        if (!localStorage.getItem('admin_password')) localStorage.setItem('admin_password', 'admin123');
+        if (!localStorage.getItem('admin_username')) localStorage.setItem('admin_username', 'admin');
+
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
+            const savedUsername = localStorage.getItem('admin_username') || 'admin';
             const savedPassword = localStorage.getItem('admin_password') || 'admin123';
-            if (username === 'admin' && password === savedPassword) {
+            
+            if (username === savedUsername && password === savedPassword) {
                 localStorage.setItem('admin_logged_in', 'true');
-                localStorage.setItem('admin_username', 'admin');
                 window.location.href = 'dashboard.html';
             } else {
                 const err = document.getElementById('errorMsg');
                 err.textContent = 'Invalid username or password';
                 err.style.display = 'block';
                 
-                // Shake animation
                 document.querySelector('.login-box').style.animation = 'shake 0.5s';
                 setTimeout(() => {
                     document.querySelector('.login-box').style.animation = '';
@@ -104,7 +108,6 @@
             }
         });
         
-        // Shake animation
         const style = document.createElement('style');
         style.textContent = `
             @keyframes shake {
@@ -115,7 +118,6 @@
         `;
         document.head.appendChild(style);
         
-        // Set background dynamically
         document.body.style.background = `
             linear-gradient(135deg, rgba(9,9,11,0.85), rgba(9,9,11,0.95)),
             url('../../images/Background.png') center/cover fixed

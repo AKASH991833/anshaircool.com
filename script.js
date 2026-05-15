@@ -533,33 +533,61 @@ function initFormSubmission() {
   const form = document.querySelector('.contact-form');
   if (!form) return;
 
+  // Populate service dropdown from localStorage
+  (function loadServiceDropdown() {
+    const sel = document.getElementById('serviceType');
+    if (!sel) return;
+    let svc = [];
+    try { svc = JSON.parse(localStorage.getItem('transparentdb_services')) || []; } catch(e) {}
+    sel.innerHTML = '<option value="">Select service...</option>' + svc.map(s => '<option value="' + s.title + '">' + s.title + '</option>').join('');
+  })();
+
+  // Toggle service dropdown based on interest
+  const interestSel = document.getElementById('interestType');
+  const serviceGroup = document.getElementById('serviceGroup');
+  if (interestSel && serviceGroup) {
+    interestSel.addEventListener('change', function() {
+      serviceGroup.style.display = this.value === 'service' ? 'block' : 'none';
+    });
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
 
     const name = form.querySelector('#name')?.value?.trim();
+    const phone = form.querySelector('#phone')?.value?.trim();
     const email = form.querySelector('#email')?.value?.trim();
     const message = form.querySelector('#message')?.value?.trim();
+    const interestType = form.querySelector('#interestType')?.value || '';
+    const serviceType = form.querySelector('#serviceType')?.value || '';
 
-    if (!name || !email || !message) {
+    if (!name || !phone || !message) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Please fill all required fields', 'error');
+        window.showToast('Please fill all required fields (Name, Phone, Message)', 'error');
       }
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Please enter a valid email', 'error');
+        window.showToast('Please enter a valid email or leave it empty', 'error');
       }
       return;
     }
+
+    let fullMessage = message;
+    if (interestType) fullMessage = 'Interest: ' + interestType + (serviceType ? ' (' + serviceType + ')' : '') + '\n' + message;
+    if (interestType === 'buy') fullMessage = 'Want to Buy AC\n' + message;
+    if (interestType === 'rent') fullMessage = 'Want to Rent AC\n' + message;
+    if (interestType === 'service') fullMessage = 'Service Needed: ' + (serviceType || 'General') + '\n' + message;
 
     const formData = new URLSearchParams({
-      name, email,
-      phone: form.querySelector('#phone')?.value || '',
-      message
+      name,
+      phone,
+      email: email || '',
+      message: fullMessage
     });
 
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
@@ -575,7 +603,7 @@ function initFormSubmission() {
     } catch (e) {
       console.warn('Server unavailable, saving locally');
       if (typeof TransparentDB !== 'undefined') {
-        await TransparentDB.submitContact({name, email, phone: form.querySelector('#phone')?.value || '', message});
+        await TransparentDB.submitContact({name, email, phone, message: fullMessage});
       }
     }
 
@@ -591,6 +619,7 @@ function initFormSubmission() {
         submitBtn.style.background = '';
         submitBtn.disabled = false;
         form.reset();
+        document.getElementById('serviceGroup').style.display = 'none';
       }, 2000);
     }, 1500);
   });

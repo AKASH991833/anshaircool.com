@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "image": "images/ac-installation.jpg",
+    "caption": "Split AC Installation at Andheri Residence"
+  },
+  {
+    "id": 2,
+    "image": "images/ac-cleaning.jpg",
+    "caption": "Deep Cleaning Service for Office AC"
+  },
+  {
+    "id": 3,
+    "image": "images/gas-refill.jpg",
+    "caption": "Gas Refill & Leak Testing"
+  },
+  {
+    "id": 4,
+    "image": "images/ac-repair.jpg",
+    "caption": "PCB Repair for Inverter AC"
+  },
+  {
+    "id": 5,
+    "image": "images/amc-service.jpg",
+    "caption": "Yearly AMC Service Visit"
+  },
+  {
+    "id": 6,
+    "image": "images/window-ac.jpg",
+    "caption": "Window AC Installation in Bedroom"
+  }
+]

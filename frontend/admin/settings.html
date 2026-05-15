@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Admin</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fas fa-wind"></i><h2>ANSH ADMIN</h2></div>
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="products.html" class="nav-link"><i class="fas fa-box"></i> Products</a>
+            <a href="services.html" class="nav-link"><i class="fas fa-tools"></i> Services</a>
+            <a href="orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="contacts.html" class="nav-link"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="settings.html" class="nav-link active"><i class="fas fa-cog"></i> Settings</a>
+            <a href="../../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt"></i> Website</a>
+            <a href="#" class="nav-link logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar"><h1>Website Settings</h1></header>
+
+        <div class="success-msg" id="successMsg"><i class="fas fa-check-circle"></i> Settings saved successfully!</div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="hero">Hero Section</button>
+            <button class="tab-btn" data-tab="features">Features</button>
+            <button class="tab-btn" data-tab="testimonials">Testimonials</button>
+            <button class="tab-btn" data-tab="settings">Site Settings</button>
+            <button class="tab-btn" data-tab="gallery">Gallery</button>
+            <button class="tab-btn" data-tab="profile">Admin Profile</button>
+        </div>
+
+        <!-- Tab: Hero Section -->
+        <div class="tab-content active card" id="tab-hero">
+            <div class="settings-section">
+                <h2>Hero Section</h2>
+                <form id="heroForm">
+                    <div class="form-group">
+                        <label>Trust Badge Text</label>
+                        <input type="text" id="heroBadge">
+                    </div>
+                    <div class="three-col">
+                        <div class="form-group"><label>Title Line 1</label><input type="text" id="heroLine1"></div>
+                        <div class="form-group"><label>Title Line 2</label><input type="text" id="heroLine2"></div>
+                        <div class="form-group"><label>Title Line 3</label><input type="text" id="heroLine3"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subtitle (HTML allowed)</label>
+                        <textarea id="heroSubtitle" rows="3"></textarea>
+                    </div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Starting Price (₹)</label><input type="number" id="heroStartPrice"></div>
+                        <div class="form-group"><label>Old Price (₹)</label><input type="number" id="heroOldPrice"></div>
+                    </div>
+                    <div class="form-group"><label>Product Image</label><input type="text" id="heroImage" placeholder="images/split-ac.jpg"></div>
+
+                    <h3 style="color:var(--text-primary);margin:1.5rem 0 1rem;">Quick Features</h3>
+                    <div id="quickFeaturesContainer"></div>
+                    <button type="button" class="btn-sm add" onclick="addQuickFeature()" style="margin-bottom:1.5rem;"><i class="fas fa-plus"></i> Add Feature</button>
+
+                    <h3 style="color:var(--text-primary);margin:1.5rem 0 1rem;">Stats</h3>
+                    <div id="statsContainer"></div>
+                    <button type="button" class="btn-sm add" onclick="addStat()" style="margin-bottom:1.5rem;"><i class="fas fa-plus"></i> Add Stat</button>
+
+                    <button type="submit" class="btn" style="width:auto;padding:0.75rem 2rem;"><i class="fas fa-save"></i> Save Hero</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Features -->
+        <div class="tab-content card" id="tab-features">
+            <div class="settings-section">
+                <h2>Features <button class="btn-sm add" onclick="openFeatureModal('add')" style="float:right;"><i class="fas fa-plus"></i> Add Feature</button></h2>
+                <table class="mini-table">
+                    <thead><tr><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+                    <tbody id="featuresTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Testimonials -->
+        <div class="tab-content card" id="tab-testimonials">
+            <div class="settings-section">
+                <h2>Testimonials <button class="btn-sm add" onclick="openTestimonialModal('add')" style="float:right;"><i class="fas fa-plus"></i> Add Testimonial</button></h2>
+                <table class="mini-table">
+                    <thead><tr><th>Name</th><th>Location</th><th>Rating</th><th>Text</th><th>Actions</th></tr></thead>
+                    <tbody id="testimonialsTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Site Settings -->
+        <div class="tab-content card" id="tab-settings">
+            <div class="settings-section">
+                <h2>Site Settings</h2>
+                <form id="siteSettingsForm">
+                    <div class="two-col">
+                        <div class="form-group"><label>Site Name</label><input type="text" id="siteName"></div>
+                        <div class="form-group"><label>Tagline</label><input type="text" id="siteTagline"></div>
+                    </div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Phone</label><input type="text" id="sitePhone"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="siteEmail"></div>
+                    </div>
+                    <div class="form-group"><label>Address</label><input type="text" id="siteAddress"></div>
+                    <div class="two-col">
+                        <div class="form-group"><label>WhatsApp Number</label><input type="text" id="siteWhatsApp"></div>
+                        <div class="form-group"><label>WhatsApp Message</label><input type="text" id="siteWhatsAppMsg"></div>
+                    </div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Facebook URL</label><input type="url" id="siteFacebook" placeholder="https://facebook.com/..."></div>
+                        <div class="form-group"><label>Instagram URL</label><input type="url" id="siteInstagram" placeholder="https://instagram.com/..."></div>
+                    </div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Twitter URL</label><input type="url" id="siteTwitter" placeholder="https://twitter.com/..."></div>
+                        <div class="form-group"><label>YouTube URL</label><input type="url" id="siteYoutube" placeholder="https://youtube.com/..."></div>
+                    </div>
+                    <div class="form-group"><label>Description</label><textarea id="siteDescription" rows="3"></textarea></div>
+                    <button type="submit" class="btn" style="width:auto;padding:0.75rem 2rem;"><i class="fas fa-save"></i> Save Settings</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab: Gallery -->
+        <div class="tab-content card" id="tab-gallery">
+            <div class="settings-section">
+                <h2>Gallery <button class="btn-sm add" onclick="openGalleryModal('add')" style="float:right;"><i class="fas fa-plus"></i> Add Photo</button></h2>
+                <div id="galleryPreview" class="gallery-grid"></div>
+            </div>
+        </div>
+
+        <!-- Tab: Admin Profile -->
+        <div class="tab-content card" id="tab-profile">
+            <div class="settings-section">
+                <h2>Admin Profile</h2>
+                <form id="profileForm">
+                    <div class="two-col">
+                        <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
+                        <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required minlength="6"></div>
+                    </div>
+                    <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirmPassword" required></div>
+                    <button type="submit" class="btn" style="width:auto;padding:0.75rem 2rem;"><i class="fas fa-key"></i> Change Password</button>
+                </form>
+            </div>
+            <div class="settings-section" style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);">
+                <h2>Data Management</h2>
+                <div class="inline-flex" style="gap:1rem;">
+                    <button onclick="backupData()" class="action-btn" style="padding:0.75rem 1.5rem;width:auto;"><i class="fas fa-download"></i> Backup Data</button>
+                    <button onclick="restoreData()" class="action-btn warning" style="padding:0.75rem 1.5rem;width:auto;"><i class="fas fa-upload"></i> Restore Data</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h2 id="galleryModalTitle">Add Photo</h2>
+                <span class="close" onclick="closeGalleryModal()">&times;</span>
+            </div>
+            <form id="galleryForm">
+                <input type="hidden" id="galleryId">
+                <div class="form-group">
+                    <label>Photo</label>
+                    <input type="file" id="galleryFileInput" accept="image/*" onchange="previewGalleryImage(this)">
+                    <div id="galleryImagePreview" style="margin-top:0.5rem;max-width:200px;border-radius:8px;overflow:hidden;display:none;"><img id="galleryPreviewImg" src="" style="width:100%;display:block;"></div>
+                    <input type="hidden" id="galleryImage">
+                </div>
+                <div class="form-group"><label>Caption</label><input type="text" id="galleryCaption" required></div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Feature Modal -->
+    <div id="featureModal" class="modal">
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h2 id="featureModalTitle">Add Feature</h2>
+                <span class="close" onclick="closeFeatureModal()">&times;</span>
+            </div>
+            <form id="featureForm">
+                <input type="hidden" id="featureId">
+                <div class="form-group"><label>Title</label><input type="text" id="featureTitle" required></div>
+                <div class="form-group"><label>Icon class</label><input type="text" id="featureIcon" placeholder="fa-gem" required></div>
+                <div class="form-group"><label>Description</label><textarea id="featureDesc" rows="3" required></textarea></div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Testimonial Modal -->
+    <div id="testimonialModal" class="modal">
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h2 id="testimonialModalTitle">Add Testimonial</h2>
+                <span class="close" onclick="closeTestimonialModal()">&times;</span>
+            </div>
+            <form id="testimonialForm">
+                <input type="hidden" id="testimonialId">
+                <div class="two-col">
+                    <div class="form-group"><label>Name</label><input type="text" id="testName" required></div>
+                    <div class="form-group"><label>Location</label><input type="text" id="testLocation" required></div>
+                </div>
+                <div class="two-col">
+                    <div class="form-group"><label>Rating (0-5)</label><input type="number" id="testRating" step="0.1" min="0" max="5" value="5"></div>
+                    <div class="form-group"><label>Avatar URL</label><input type="text" id="testAvatar" placeholder="https://..."></div>
+                </div>
+                <div class="form-group"><label>Testimonial Text</label><textarea id="testText" rows="3" required></textarea></div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/admin.js"></script>
+    <script>
+        if (!localStorage.getItem('admin_logged_in')) window.location.href = 'index.html';
+
+        // ======== TAB SYSTEM ========
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        function showSuccess() {
+            const msg = document.getElementById('successMsg');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 3000);
+        }
+
+        // ======== HERO SECTION ========
+        const DEFAULT_HERO = {"trustBadge":"India's #1 Trusted AC Brand","titleLine1":"Experience","titleLine2":"Ultimate Cooling","titleLine3":"Like Never Before","subtitle":"Advanced inverter technology that saves <strong>up to 60% electricity</strong> while delivering lightning-fast cooling. Transform your space with Ansh Air Cool's premium AC solutions.","startingPrice":32499,"oldPrice":38999,"image":"images/split-ac.jpg","quickFeatures":[{"icon":"fa-bolt","text":"5 Star Rating"},{"icon":"fa-truck-fast","text":"Free Delivery"},{"icon":"fa-shield-halved","text":"10 Year Warranty"}],"stats":[{"count":15,"suffix":"+","label":"Years Experience"},{"count":50,"suffix":"K+","label":"Happy Customers"},{"count":99,"suffix":"%","label":"Satisfaction Rate"}]};
+
+        function loadHero() {
+            let data;
+            const saved = localStorage.getItem('transparentdb_hero');
+            if (saved) { try { data = JSON.parse(saved); } catch(e) {} }
+            if (!data) data = DEFAULT_HERO;
+
+            document.getElementById('heroBadge').value = data.trustBadge || '';
+            document.getElementById('heroLine1').value = data.titleLine1 || '';
+            document.getElementById('heroLine2').value = data.titleLine2 || '';
+            document.getElementById('heroLine3').value = data.titleLine3 || '';
+            document.getElementById('heroSubtitle').value = data.subtitle || '';
+            document.getElementById('heroStartPrice').value = data.startingPrice || '';
+            document.getElementById('heroOldPrice').value = data.oldPrice || '';
+            document.getElementById('heroImage').value = data.image || '';
+
+            renderQuickFeatures(data.quickFeatures || []);
+            renderStats(data.stats || []);
+        }
+
+        function renderQuickFeatures(features) {
+            const container = document.getElementById('quickFeaturesContainer');
+            container.innerHTML = features.map((f, i) => `
+                <div class="stat-item-row">
+                    <input type="text" class="qf-icon" value="${f.icon}" placeholder="fa-bolt" style="flex:0.4;">
+                    <input type="text" class="qf-text" value="${f.text}" placeholder="5 Star Rating" style="flex:1;">
+                    <button type="button" class="btn-sm delete" onclick="removeQuickFeature(this)"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addQuickFeature() {
+            const container = document.getElementById('quickFeaturesContainer');
+            const div = document.createElement('div');
+            div.className = 'stat-item-row';
+            div.innerHTML = '<input type="text" class="qf-icon" placeholder="fa-bolt" style="flex:0.4;"><input type="text" class="qf-text" placeholder="Feature text" style="flex:1;"><button type="button" class="btn-sm delete" onclick="removeQuickFeature(this)"><i class="fas fa-times"></i></button>';
+            container.appendChild(div);
+        }
+
+        function removeQuickFeature(btn) { btn.closest('.stat-item-row').remove(); }
+
+        function renderStats(stats) {
+            const container = document.getElementById('statsContainer');
+            container.innerHTML = stats.map((s, i) => `
+                <div class="stat-item-row">
+                    <input type="text" class="stat-count" value="${s.count}" placeholder="15" style="flex:0.3;">
+                    <input type="text" class="stat-suffix" value="${s.suffix}" placeholder="+" style="flex:0.2;">
+                    <input type="text" class="stat-label" value="${s.label}" placeholder="Years" style="flex:1;">
+                    <button type="button" class="btn-sm delete" onclick="removeStat(this)"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function addStat() {
+            const container = document.getElementById('statsContainer');
+            const div = document.createElement('div');
+            div.className = 'stat-item-row';
+            div.innerHTML = '<input type="text" class="stat-count" placeholder="15" style="flex:0.3;"><input type="text" class="stat-suffix" placeholder="+" style="flex:0.2;"><input type="text" class="stat-label" placeholder="Label" style="flex:1;"><button type="button" class="btn-sm delete" onclick="removeStat(this)"><i class="fas fa-times"></i></button>';
+            container.appendChild(div);
+        }
+
+        function removeStat(btn) { btn.closest('.stat-item-row').remove(); }
+
+        document.getElementById('heroForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const qfIcons = document.querySelectorAll('.qf-icon');
+            const qfTexts = document.querySelectorAll('.qf-text');
+            const quickFeatures = [];
+            qfIcons.forEach((iconEl, i) => {
+                if (qfTexts[i]?.value.trim()) quickFeatures.push({icon: iconEl.value.trim(), text: qfTexts[i].value.trim()});
+            });
+            const statCounts = document.querySelectorAll('.stat-count');
+            const statSuffixes = document.querySelectorAll('.stat-suffix');
+            const statLabels = document.querySelectorAll('.stat-label');
+            const stats = [];
+            statCounts.forEach((el, i) => {
+                if (el.value.trim() && statLabels[i]?.value.trim()) stats.push({count: parseInt(el.value), suffix: statSuffixes[i]?.value?.trim() || '', label: statLabels[i].value.trim()});
+            });
+            const data = {
+                trustBadge: document.getElementById('heroBadge').value,
+                titleLine1: document.getElementById('heroLine1').value,
+                titleLine2: document.getElementById('heroLine2').value,
+                titleLine3: document.getElementById('heroLine3').value,
+                subtitle: document.getElementById('heroSubtitle').value,
+                startingPrice: parseInt(document.getElementById('heroStartPrice').value) || 0,
+                oldPrice: parseInt(document.getElementById('heroOldPrice').value) || 0,
+                image: document.getElementById('heroImage').value,
+                quickFeatures, stats
+            };
+            localStorage.setItem('transparentdb_hero', JSON.stringify(data));
+            showSuccess();
+        });
+
+        // ======== FEATURES ========
+        const DEFAULT_FEATURES = [
+            {id:1, icon:'fa-gem', title:'Superior Quality', description:'Built with premium components and rigorous testing for lasting durability and peak performance.'},
+            {id:2, icon:'fa-wifi', title:'Smart Connectivity', description:'WiFi-enabled control lets you manage your AC from anywhere using your smartphone.'},
+            {id:3, icon:'fa-shield-alt', title:'10 Year Warranty', description:'Comprehensive warranty coverage for complete peace of mind on your investment.'},
+            {id:4, icon:'fa-award', title:'100% Satisfaction', description:'Not happy? We offer full replacement or refund. Your satisfaction is guaranteed.'},
+            {id:5, icon:'fa-bolt', title:'Energy Efficient', description:'5-star rated inverter technology that cuts your electricity bills by up to 60%.'},
+            {id:6, icon:'fa-headset', title:'24/7 Support', description:'Round-the-clock customer support with instant response and quick resolution.'}
+        ];
+        let features = [];
+
+        function loadFeatures() {
+            const saved = localStorage.getItem('transparentdb_features');
+            if (saved) { try { features = JSON.parse(saved); } catch(e) {} }
+            if (!features || features.length === 0) { features = JSON.parse(JSON.stringify(DEFAULT_FEATURES)); localStorage.setItem('transparentdb_features', JSON.stringify(features)); }
+            renderFeatures();
+        }
+
+        function renderFeatures() {
+            const tbody = document.getElementById('featuresTable');
+            tbody.innerHTML = features.map(f => `
+                <tr><td><i class="fas ${f.icon}" style="color:var(--primary);font-size:1.25rem;"></i></td><td>${f.title}</td><td>${f.description}</td><td><button class="btn-sm edit" onclick="openFeatureModal('edit',${f.id})"><i class="fas fa-edit"></i></button> <button class="btn-sm delete" onclick="deleteFeature(${f.id})"><i class="fas fa-trash"></i></button></td></tr>
+            `).join('');
+        }
+
+        function openFeatureModal(mode, id) {
+            document.getElementById('featureModal').style.display = 'flex';
+            if (mode === 'add') {
+                document.getElementById('featureModalTitle').textContent = 'Add Feature';
+                document.getElementById('featureForm').reset();
+                document.getElementById('featureId').value = '';
+            } else {
+                document.getElementById('featureModalTitle').textContent = 'Edit Feature';
+                const f = features.find(x => x.id === id);
+                if (!f) return;
+                document.getElementById('featureId').value = f.id;
+                document.getElementById('featureTitle').value = f.title;
+                document.getElementById('featureIcon').value = f.icon;
+                document.getElementById('featureDesc').value = f.description;
+            }
+        }
+
+        function closeFeatureModal() { document.getElementById('featureModal').style.display = 'none'; }
+
+        document.getElementById('featureForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('featureId').value;
+            const data = {title: document.getElementById('featureTitle').value, icon: document.getElementById('featureIcon').value, description: document.getElementById('featureDesc').value};
+            if (id) { const idx = features.findIndex(f => f.id === parseInt(id)); if (idx !== -1) features[idx] = {...features[idx], ...data}; }
+            else { data.id = Date.now(); features.push(data); }
+            localStorage.setItem('transparentdb_features', JSON.stringify(features));
+            renderFeatures();
+            closeFeatureModal();
+            showSuccess();
+        });
+
+        function deleteFeature(id) {
+            if (!confirm('Delete this feature?')) return;
+            features = features.filter(f => f.id !== id);
+            localStorage.setItem('transparentdb_features', JSON.stringify(features));
+            renderFeatures();
+            showSuccess();
+        }
+
+        // ======== TESTIMONIALS ========
+        const DEFAULT_TESTIMONIALS = [
+            {id:1, name:'Rajesh Kumar', location:'Mumbai, Maharashtra', avatar:'https://randomuser.me/api/portraits/men/32.jpg', rating:5, text:'The cooling performance is exceptional. Room reaches desired temp in minutes. Installation team was professional and quick.'},
+            {id:2, name:'Priya Sharma', location:'Bangalore, Karnataka', avatar:'https://randomuser.me/api/portraits/women/44.jpg', rating:5, text:'Best AC purchase ever! Inverter tech really saves electricity. WiFi control is so convenient. Highly recommended!'},
+            {id:3, name:'Amit Patel', location:'Ahmedabad, Gujarat', avatar:'https://randomuser.me/api/portraits/men/67.jpg', rating:4.5, text:'Ultra-silent model is perfect for bedroom. Sleep peacefully without noise. Great build quality too!'},
+            {id:4, name:'Sneha Reddy', location:'Hyderabad, Telangana', avatar:'https://randomuser.me/api/portraits/women/68.jpg', rating:5, text:'The AMC plan is fantastic! Regular maintenance visits keep my AC running perfectly year-round.'}
+        ];
+        let testimonials = [];
+
+        function loadTestimonials() {
+            const saved = localStorage.getItem('transparentdb_testimonials');
+            if (saved) { try { testimonials = JSON.parse(saved); } catch(e) {} }
+            if (!testimonials || testimonials.length === 0) { testimonials = JSON.parse(JSON.stringify(DEFAULT_TESTIMONIALS)); localStorage.setItem('transparentdb_testimonials', JSON.stringify(testimonials)); }
+            renderTestimonials();
+        }
+
+        function renderTestimonials() {
+            const tbody = document.getElementById('testimonialsTable');
+            tbody.innerHTML = testimonials.map(t => `
+                <tr><td>${t.name}</td><td>${t.location}</td><td>${'★'.repeat(Math.floor(t.rating))}${t.rating % 1 ? '½' : ''}</td><td class="text-truncate" title="${t.text}">${t.text}</td><td><button class="btn-sm edit" onclick="openTestimonialModal('edit',${t.id})"><i class="fas fa-edit"></i></button> <button class="btn-sm delete" onclick="deleteTestimonial(${t.id})"><i class="fas fa-trash"></i></button></td></tr>
+            `).join('');
+        }
+
+        function openTestimonialModal(mode, id) {
+            document.getElementById('testimonialModal').style.display = 'flex';
+            if (mode === 'add') {
+                document.getElementById('testimonialModalTitle').textContent = 'Add Testimonial';
+                document.getElementById('testimonialForm').reset();
+                document.getElementById('testimonialId').value = '';
+                document.getElementById('testRating').value = 5;
+            } else {
+                document.getElementById('testimonialModalTitle').textContent = 'Edit Testimonial';
+                const t = testimonials.find(x => x.id === id);
+                if (!t) return;
+                document.getElementById('testimonialId').value = t.id;
+                document.getElementById('testName').value = t.name;
+                document.getElementById('testLocation').value = t.location;
+                document.getElementById('testRating').value = t.rating;
+                document.getElementById('testAvatar').value = t.avatar || '';
+                document.getElementById('testText').value = t.text;
+            }
+        }
+
+        function closeTestimonialModal() { document.getElementById('testimonialModal').style.display = 'none'; }
+
+        document.getElementById('testimonialForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('testimonialId').value;
+            const data = {name: document.getElementById('testName').value, location: document.getElementById('testLocation').value, rating: parseFloat(document.getElementById('testRating').value), avatar: document.getElementById('testAvatar').value, text: document.getElementById('testText').value};
+            if (id) { const idx = testimonials.findIndex(t => t.id === parseInt(id)); if (idx !== -1) testimonials[idx] = {...testimonials[idx], ...data}; }
+            else { data.id = Date.now(); testimonials.push(data); }
+            localStorage.setItem('transparentdb_testimonials', JSON.stringify(testimonials));
+            renderTestimonials();
+            closeTestimonialModal();
+            showSuccess();
+        });
+
+        function deleteTestimonial(id) {
+            if (!confirm('Delete this testimonial?')) return;
+            testimonials = testimonials.filter(t => t.id !== id);
+            localStorage.setItem('transparentdb_testimonials', JSON.stringify(testimonials));
+            renderTestimonials();
+            showSuccess();
+        }
+
+        // ======== SITE SETTINGS ========
+        const DEFAULT_SETTINGS = {siteName:'ANSH AIR COOL',phone:'+919876543210',email:'support@anshaircool.com',address:'123 Cool Street, AC Market, Mumbai, Maharashtra',whatsappNumber:'919876543210',whatsappMessage:'Hi, I\'m interested in your AC products',tagline:'Premium Air Conditioning Solutions',description:'Advanced inverter technology that saves up to 60% electricity while delivering lightning-fast cooling. Transform your space with Ansh Air Cool\'s premium AC solutions.',facebook:'https://facebook.com/anshaircool',instagram:'https://instagram.com/anshaircool',twitter:'https://twitter.com/anshaircool',youtube:'https://youtube.com/@anshaircool'};
+
+        function loadSiteSettings() {
+            let data;
+            const saved = localStorage.getItem('transparentdb_settings');
+            if (saved) { try { data = JSON.parse(saved); } catch(e) {} }
+            if (!data) data = DEFAULT_SETTINGS;
+            document.getElementById('siteName').value = data.siteName || '';
+            document.getElementById('siteTagline').value = data.tagline || '';
+            document.getElementById('sitePhone').value = data.phone || '';
+            document.getElementById('siteEmail').value = data.email || '';
+            document.getElementById('siteAddress').value = data.address || '';
+            document.getElementById('siteWhatsApp').value = data.whatsappNumber || '';
+            document.getElementById('siteWhatsAppMsg').value = data.whatsappMessage || '';
+            document.getElementById('siteFacebook').value = data.facebook || '';
+            document.getElementById('siteInstagram').value = data.instagram || '';
+            document.getElementById('siteTwitter').value = data.twitter || '';
+            document.getElementById('siteYoutube').value = data.youtube || '';
+            document.getElementById('siteDescription').value = data.description || '';
+        }
+
+        document.getElementById('siteSettingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = {
+                siteName: document.getElementById('siteName').value,
+                tagline: document.getElementById('siteTagline').value,
+                phone: document.getElementById('sitePhone').value,
+                email: document.getElementById('siteEmail').value,
+                address: document.getElementById('siteAddress').value,
+                whatsappNumber: document.getElementById('siteWhatsApp').value,
+                whatsappMessage: document.getElementById('siteWhatsAppMsg').value,
+                facebook: document.getElementById('siteFacebook').value,
+                instagram: document.getElementById('siteInstagram').value,
+                twitter: document.getElementById('siteTwitter').value,
+                youtube: document.getElementById('siteYoutube').value,
+                description: document.getElementById('siteDescription').value
+            };
+            localStorage.setItem('transparentdb_settings', JSON.stringify(data));
+            showSuccess();
+        });
+
+        // ======== ADMIN PROFILE ========
+        document.getElementById('profileForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPw = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const saved = localStorage.getItem('admin_password') || 'admin123';
+            if (current !== saved) { alert('Current password is incorrect!'); return; }
+            if (newPw !== confirm) { alert('New passwords do not match!'); return; }
+            if (newPw.length < 6) { alert('Password must be at least 6 characters!'); return; }
+            localStorage.setItem('admin_password', newPw);
+            document.getElementById('profileForm').reset();
+            alert('Password changed successfully!');
+        });
+
+        // Modify login script to use saved password
+        const originalLogin = localStorage.getItem('admin_password');
+        if (!originalLogin) localStorage.setItem('admin_password', 'admin123');
+
+        function logActivity(msg) {
+            const logs = JSON.parse(localStorage.getItem('transparentdb_activity') || '[]');
+            logs.unshift({msg, time: new Date().toISOString()});
+            if (logs.length > 100) logs.length = 100;
+            localStorage.setItem('transparentdb_activity', JSON.stringify(logs));
+        }
+
+        // ======== LOGOUT ========
+        function logout() { localStorage.removeItem('admin_logged_in'); window.location.href = 'index.html'; }
+
+        document.body.style.background = 'linear-gradient(135deg, rgba(9,9,11,0.8), rgba(9,9,11,0.9)), url(\'../../images/Background.png\') center/cover fixed';
+
+        // ======== GALLERY ========
+        let galleryItems = [];
+        const DEFAULT_GALLERY = [
+            {id:1, image:'images/ac-installation.jpg', caption:'Split AC Installation at Andheri Residence'},
+            {id:2, image:'images/ac-cleaning.jpg', caption:'Deep Cleaning Service for Office AC'},
+            {id:3, image:'images/gas-refill.jpg', caption:'Gas Refill & Leak Testing'},
+            {id:4, image:'images/ac-repair.jpg', caption:'PCB Repair for Inverter AC'},
+            {id:5, image:'images/amc-service.jpg', caption:'Yearly AMC Service Visit'},
+            {id:6, image:'images/window-ac.jpg', caption:'Window AC Installation in Bedroom'}
+        ];
+
+        function loadGallery() {
+            const saved = localStorage.getItem('transparentdb_gallery');
+            if (saved) { try { galleryItems = JSON.parse(saved); } catch(e) {} }
+            if (!galleryItems || galleryItems.length === 0) { galleryItems = JSON.parse(JSON.stringify(DEFAULT_GALLERY)); localStorage.setItem('transparentdb_gallery', JSON.stringify(galleryItems)); }
+            renderGalleryAdmin();
+        }
+
+        function renderGalleryAdmin() {
+            const container = document.getElementById('galleryPreview');
+            if (!galleryItems.length) { container.innerHTML = '<p style="color:var(--text-muted);">No photos yet. Click "Add Photo" to upload.</p>'; return; }
+            container.innerHTML = galleryItems.map(item => `
+                <div class="gallery-item">
+                    <img src="${item.image}" alt="${item.caption}">
+                    <div class="gallery-caption">${item.caption}</div>
+                    <div class="gallery-actions">
+                        <button class="btn-sm edit" onclick="openGalleryModal('edit',${item.id})"><i class="fas fa-edit" style="font-size:0.7rem;"></i></button>
+                        <button class="btn-sm delete" onclick="deleteGallery(${item.id})"><i class="fas fa-trash" style="font-size:0.7rem;"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.previewGalleryImage = function(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('galleryImage').value = e.target.result;
+                const preview = document.getElementById('galleryImagePreview');
+                preview.style.display = 'block';
+                document.getElementById('galleryPreviewImg').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        function openGalleryModal(mode, id) {
+            document.getElementById('galleryModal').style.display = 'flex';
+            if (mode === 'add') {
+                document.getElementById('galleryModalTitle').textContent = 'Add Photo';
+                document.getElementById('galleryForm').reset();
+                document.getElementById('galleryId').value = '';
+                document.getElementById('galleryImagePreview').style.display = 'none';
+            } else {
+                document.getElementById('galleryModalTitle').textContent = 'Edit Photo';
+                const item = galleryItems.find(x => x.id === id);
+                if (!item) return;
+                document.getElementById('galleryId').value = item.id;
+                document.getElementById('galleryCaption').value = item.caption;
+                document.getElementById('galleryImage').value = item.image;
+                const preview = document.getElementById('galleryImagePreview');
+                preview.style.display = 'block';
+                document.getElementById('galleryPreviewImg').src = item.image;
+            }
+        }
+
+        function closeGalleryModal() { document.getElementById('galleryModal').style.display = 'none'; }
+
+        document.getElementById('galleryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('galleryId').value;
+            const image = document.getElementById('galleryImage').value;
+            const caption = document.getElementById('galleryCaption').value;
+            if (!image || !caption) { alert('Please select an image and enter a caption.'); return; }
+            if (id) {
+                const idx = galleryItems.findIndex(x => x.id === parseInt(id));
+                if (idx !== -1) galleryItems[idx] = {...galleryItems[idx], image, caption};
+            } else {
+                galleryItems.push({id: Date.now(), image, caption});
+            }
+            localStorage.setItem('transparentdb_gallery', JSON.stringify(galleryItems));
+            if (typeof logActivity === 'function') logActivity('Gallery updated (' + galleryItems.length + ' photos)');
+            renderGalleryAdmin();
+            closeGalleryModal();
+            showSuccess();
+        });
+
+        function deleteGallery(id) {
+            if (!confirm('Delete this photo?')) return;
+            galleryItems = galleryItems.filter(x => x.id !== id);
+            localStorage.setItem('transparentdb_gallery', JSON.stringify(galleryItems));
+            if (typeof logActivity === 'function') logActivity('Gallery photo deleted');
+            renderGalleryAdmin();
+            showSuccess();
+        }
+
+        // ======== INIT ========
+        loadHero();
+        loadFeatures();
+        loadTestimonials();
+        loadSiteSettings();
+        loadGallery();
+    </script>
+</body>
+</html>

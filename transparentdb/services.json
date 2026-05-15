@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "AC Installation",
+    "description": "Professional setup for Split, Window & Cassette ACs with zero damage guarantee and free demo.",
+    "image": "images/ac-installation.jpg",
+    "icon": "fa-screwdriver-wrench",
+    "features": ["Expert Technicians", "All Brands Supported", "Same Day Service"],
+    "order": 1
+  },
+  {
+    "id": 2,
+    "title": "AC Cleaning & Service",
+    "description": "Deep cleaning with anti-bacterial foam wash for better cooling and healthy air quality.",
+    "image": "images/ac-cleaning.jpg",
+    "icon": "fa-broom",
+    "features": ["Foam Wash Technology", "Filter Deep Cleaning", "Anti-Bacterial Treatment"],
+    "order": 2
+  },
+  {
+    "id": 3,
+    "title": "Gas Refill & Charging",
+    "description": "R410A & R32 gas refill with leak detection and pressure testing for optimal cooling.",
+    "image": "images/gas-refill.jpg",
+    "icon": "fa-snowflake",
+    "features": ["Genuine Gas Only", "Leak Detection", "Pressure Testing"],
+    "order": 3
+  },
+  {
+    "id": 4,
+    "title": "AC Repair & Service",
+    "description": "Same-day repair for all AC brands with genuine spare parts and service warranty.",
+    "image": "images/ac-repair.jpg",
+    "icon": "fa-wrench",
+    "features": ["All Brands Repaired", "Genuine Spare Parts", "30-Day Warranty"],
+    "order": 4
+  },
+  {
+    "id": 5,
+    "title": "Annual Maintenance (AMC)",
+    "description": "Yearly AMC plans with unlimited servicing, priority support & 20% discount on repairs.",
+    "image": "images/amc-service.jpg",
+    "icon": "fa-clipboard-check",
+    "features": ["Unlimited Service Calls", "Priority Support", "20% Discount on Repairs"],
+    "order": 5
+  },
+  {
+    "id": 6,
+    "title": "PCB Repair & Service",
+    "description": "Advanced PCB level repair for inverter ACs with component replacement and testing.",
+    "image": "images/pcb-repair.jpg",
+    "icon": "fa-microchip",
+    "features": ["Component Level Repair", "Inverter AC Specialist", "90-Day Warranty"],
+    "order": 6
+  }
+]

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Admin</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fas fa-wind"></i><h2>ANSH ADMIN</h2></div>
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="products.html" class="nav-link active"><i class="fas fa-box"></i> Products</a>
+            <a href="services.html" class="nav-link"><i class="fas fa-tools"></i> Services</a>
+            <a href="orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="contacts.html" class="nav-link"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+            <a href="../../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt"></i> Website</a>
+            <a href="#" class="nav-link logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <h1>Products Management</h1>
+            <button class="btn" onclick="openModal('add')"><i class="fas fa-plus"></i> Add Product</button>
+        </header>
+
+        <div class="card">
+            <div class="inline-flex" style="gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+                <div class="form-group" style="max-width:400px;margin:0;">
+                    <input type="text" id="productSearch" class="search-input" placeholder="Search products..." oninput="renderProducts()">
+                </div>
+                <button onclick="openModal('add')" class="btn-sm add"><i class="fas fa-plus"></i> Add Product</button>
+                <button onclick="exportProducts()" class="btn-sm view" title="Export to CSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+            </div>
+            <div class="bulk-bar" id="bulkBar">
+                <span class="bulk-count">0 selected</span>
+                <button class="btn-sm delete" onclick="bulkDeleteProducts()"><i class="fas fa-trash"></i> Delete Selected</button>
+                <button class="btn-sm cancel" onclick="clearSelection()" style="background:rgba(255,255,255,0.1);color:var(--text-primary);"><i class="fas fa-times"></i> Clear</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px;"><input type="checkbox" class="select-all" onchange="toggleSelectAll(this,document.querySelectorAll('.select-item'))"></th>
+                            <th class="sortable" data-sort="image" onclick="sortProducts('image')">Image <i class="fas fa-sort sort-icon"></i></th>
+                            <th class="sortable" data-sort="name" onclick="sortProducts('name')">Name <i class="fas fa-sort sort-icon"></i></th>
+                            <th class="sortable" data-sort="category" onclick="sortProducts('category')">Category <i class="fas fa-sort sort-icon"></i></th>
+                            <th class="sortable" data-sort="buyPrice" onclick="sortProducts('buyPrice')">Buy Price <i class="fas fa-sort sort-icon"></i></th>
+                            <th class="sortable" data-sort="rentPrice" onclick="sortProducts('rentPrice')">Rent Price <i class="fas fa-sort sort-icon"></i></th>
+                            <th>Badge</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="productsPagination"></div>
+        </div>
+    </main>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Product</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="category" required>
+                            <option value="Split AC">Split AC</option>
+                            <option value="Window AC">Window AC</option>
+                            <option value="Inverter AC">Inverter AC</option>
+                            <option value="Cassette AC">Cassette AC</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Buy Price (₹)</label>
+                        <input type="number" id="buyPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Old Price (₹)</label>
+                        <input type="number" id="oldPrice" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rent Price (₹/month)</label>
+                        <input type="number" id="rentPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating (0-5)</label>
+                        <input type="number" id="rating" step="0.1" min="0" max="5" value="5">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rating Count</label>
+                        <input type="number" id="ratingCount" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Badge Type</label>
+                        <select id="badgeType">
+                            <option value="">None</option>
+                            <option value="best-seller">Best Seller</option>
+                            <option value="new">New</option>
+                            <option value="hot">Hot</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Badge Text</label>
+                    <input type="text" id="badgeText" placeholder="e.g. Best Seller">
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="file" id="imageFile" accept="image/*" onchange="previewProductImage(this)">
+                    <input type="hidden" id="image" placeholder="e.g. images/split-ac.jpg">
+                    <img id="productImagePreview" class="img-preview" src="">
+                    <small style="color:var(--text-muted);display:block;margin-top:0.3rem;">Or enter filename: <input type="text" id="imageFilename" placeholder="images/split-ac.jpg" oninput="document.getElementById('image').value=this.value" style="background:transparent;border:1px solid var(--border);border-radius:4px;padding:0.2rem 0.5rem;color:var(--text-primary);font-size:0.8rem;width:200px;"></small>
+                </div>
+                <div class="form-group">
+                    <label>Features (comma separated)</label>
+                    <input type="text" id="features" placeholder="e.g. 5 Star, Inverter, Cool">
+                </div>
+                <div class="form-group">
+                    <label>Buy Description</label>
+                    <textarea id="descriptionBuy" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Rent Description</label>
+                    <textarea id="descriptionRent" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-save"></i> Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/admin.js"></script>
+    <script>
+        if (!localStorage.getItem('admin_logged_in')) window.location.href = 'index.html';
+
+        const DEFAULT_PRODUCTS = [
+            {id:1, name:'Ansh Pro Cool Split', category:'Split AC', buyPrice:42999, rentPrice:2499, oldPrice:52999, rating:4.5, ratingCount:2847, badge:{type:'best-seller',text:'Best Seller'}, features:['5 Star','Inverter','Cool'], image:'images/split-ac.jpg', descriptionBuy:'Premium 5-star inverter split AC with advanced cooling technology. Perfect for homes and offices with energy savings up to 60%. Comes with 10-year compressor warranty and free installation.', descriptionRent:'Rent this premium split AC for your space. Includes free maintenance, 24/7 support, and no deposit required. Flexible rental terms with easy upgrade options.'},
+            {id:2, name:'Ansh Elite Window', category:'Window AC', buyPrice:32499, rentPrice:1799, oldPrice:38999, rating:5.0, ratingCount:1523, badge:{type:'new',text:'New'}, features:['4 Star','Auto','Easy Install'], image:'images/window-ac.jpg', descriptionBuy:'Energy-efficient 4-star window AC with quick cooling and auto mode. Easy installation, low noise operation. Perfect for bedrooms and small rooms.', descriptionRent:'Affordable window AC rental solution. Complete maintenance included. Great for rented apartments, offices, and seasonal needs.'},
+            {id:3, name:'Ansh Max Inverter Pro', category:'Inverter AC', buyPrice:54999, rentPrice:3299, oldPrice:68999, rating:5.0, ratingCount:3291, badge:{type:'hot',text:'Hot'}, features:['5 Star','Variable','Auto Clean'], image:'images/cassette-ac.jpg', descriptionBuy:'Top-of-the-line 5-star inverter AC with variable speed compressor. Ultra-quiet operation, auto-clean feature, and maximum energy efficiency.', descriptionRent:'Premium cassette AC on rent for large spaces. Includes quarterly maintenance, priority support, and flexible upgrade options.'}
+        ];
+
+        let products = [];
+        let productsPage = 1;
+        let productSortField = '';
+        let productSortDir = 1;
+        const PER_PAGE = 10;
+
+        function loadData() {
+            const saved = localStorage.getItem('transparentdb_products');
+            if (saved) {
+                try { products = JSON.parse(saved); } catch(e) { products = []; }
+            }
+            if (!products || products.length === 0) {
+                products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+                saveData();
+            }
+            renderProducts();
+            initModalOverlay('productModal');
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        }
+
+        function saveData() {
+            localStorage.setItem('transparentdb_products', JSON.stringify(products));
+            if (typeof logActivity === 'function') logActivity('Products updated (' + products.length + ' items)');
+        }
+
+        function sortProducts(field) {
+            if (productSortField === field) { productSortDir *= -1; } else { productSortField = field; productSortDir = 1; }
+            const headers = document.querySelectorAll('.sortable');
+            headers.forEach(h => h.classList.remove('active-sort'));
+            const active = document.querySelector('.sortable[data-sort="' + field + '"]');
+            if (active) active.classList.add('active-sort');
+            products.sort((a, b) => {
+                let va = a[field], vb = b[field];
+                if (typeof va === 'string') va = va.toLowerCase();
+                if (typeof vb === 'string') vb = vb.toLowerCase();
+                if (va < vb) return -1 * productSortDir;
+                if (va > vb) return 1 * productSortDir;
+                return 0;
+            });
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const tbody = document.getElementById('productsTable');
+            const search = (document.getElementById('productSearch')?.value || '').toLowerCase();
+            let filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || p.category.toLowerCase().includes(search)) : products;
+
+            const totalPages = Math.ceil(filtered.length / PER_PAGE) || 1;
+            if (productsPage > totalPages) productsPage = totalPages;
+            const start = (productsPage - 1) * PER_PAGE;
+            const pageItems = filtered.slice(start, start + PER_PAGE);
+
+            if (!pageItems.length) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><div class="empty-state-icon"><i class="fas fa-box-open"></i></div>No products found.</td></tr>';
+                document.getElementById('productsPagination').innerHTML = '';
+                updateBulkBar();
+                return;
+            }
+
+            tbody.innerHTML = pageItems.map(p => `
+                <tr>
+                    <td><input type="checkbox" class="select-item" value="${p.id}" onchange="updateBulkBar()"></td>
+                    <td><img src="../../${p.image || 'images/split-ac.jpg'}" class="thumb" onerror="this.src='../../images/split-ac.jpg'"></td>
+                    <td>${p.name}</td>
+                    <td>${p.category}</td>
+                    <td>₹${Number(p.buyPrice).toLocaleString()}</td>
+                    <td>₹${Number(p.rentPrice).toLocaleString()}/mo</td>
+                    <td><span class="badge">${p.badge?.text || ''}</span></td>
+                    <td>
+                        <button class="btn-sm edit" onclick="openModal('edit',${p.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button class="btn-sm delete" onclick="confirmAction('Delete product "' + '${p.name.replace(/'/g, "\\'")}' + '"?',()=>deleteProduct(${p.id}))" title="Delete"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('productsPagination').innerHTML = paginationHTML(totalPages, productsPage, 'goProductsPage');
+            updateBulkBar();
+        }
+
+        function goProductsPage(p) { productsPage = p; renderProducts(); }
+
+        function clearSelection() {
+            document.querySelectorAll('.select-item, .select-all').forEach(cb => cb.checked = false);
+            updateBulkBar();
+        }
+
+        function bulkDeleteProducts() {
+            const ids = getSelectedIds();
+            if (!ids.length) return;
+            confirmAction('Delete ' + ids.length + ' selected products?', () => {
+                products = products.filter(p => !ids.includes(p.id));
+                saveData();
+                renderProducts();
+                showToast(ids.length + ' product(s) deleted');
+            });
+        }
+
+        function exportProducts() {
+            const search = (document.getElementById('productSearch')?.value || '').toLowerCase();
+            let filtered = search ? products.filter(p => p.name.toLowerCase().includes(search) || p.category.toLowerCase().includes(search)) : products;
+            if (!filtered.length) { showToast('No products to export.', 'warning'); return; }
+            const headers = ['Name','Category','Buy Price','Rent Price','Badge'];
+            const rows = filtered.map(p => [p.name, p.category, p.buyPrice, p.rentPrice, p.badge?.text || '']);
+            downloadCSV(headers, rows, 'products-export.csv');
+            showToast('Exported ' + filtered.length + ' products');
+        }
+
+        function previewProductImage(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('productImagePreview');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                document.getElementById('image').value = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openModal(mode, id) {
+            const modal = document.getElementById('productModal');
+            modal.style.display = 'flex';
+            document.getElementById('productImagePreview').style.display = 'none';
+            document.getElementById('imageFile').value = '';
+            if (mode === 'add') {
+                document.getElementById('modalTitle').textContent = 'Add Product';
+                document.getElementById('productForm').reset();
+                document.getElementById('productId').value = '';
+                document.getElementById('rating').value = 5;
+                document.getElementById('ratingCount').value = 0;
+                document.getElementById('image').value = '';
+                document.getElementById('imageFilename').value = '';
+            } else {
+                document.getElementById('modalTitle').textContent = 'Edit Product';
+                const p = products.find(x => x.id === id);
+                if (!p) return;
+                document.getElementById('productId').value = p.id;
+                document.getElementById('name').value = p.name;
+                document.getElementById('category').value = p.category;
+                document.getElementById('buyPrice').value = p.buyPrice;
+                document.getElementById('oldPrice').value = p.oldPrice || 0;
+                document.getElementById('rentPrice').value = p.rentPrice;
+                document.getElementById('rating').value = p.rating || 5;
+                document.getElementById('ratingCount').value = p.ratingCount || 0;
+                document.getElementById('badgeType').value = p.badge?.type || '';
+                document.getElementById('badgeText').value = p.badge?.text || '';
+                document.getElementById('image').value = p.image || '';
+                document.getElementById('imageFilename').value = p.image || '';
+                document.getElementById('features').value = (p.features || []).join(', ');
+                document.getElementById('descriptionBuy').value = p.descriptionBuy || '';
+                document.getElementById('descriptionRent').value = p.descriptionRent || '';
+                if (p.image && !p.image.startsWith('data:')) {
+                    document.getElementById('productImagePreview').src = '../../' + p.image;
+                    document.getElementById('productImagePreview').style.display = 'block';
+                } else if (p.image && p.image.startsWith('data:')) {
+                    document.getElementById('productImagePreview').src = p.image;
+                    document.getElementById('productImagePreview').style.display = 'block';
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        document.getElementById('productForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('productId').value;
+            const badgeType = document.getElementById('badgeType').value;
+            const badgeText = document.getElementById('badgeText').value;
+            let image = document.getElementById('image').value;
+            if (!image) image = document.getElementById('imageFilename').value || 'images/split-ac.jpg';
+            const data = {
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                buyPrice: parseInt(document.getElementById('buyPrice').value),
+                oldPrice: parseInt(document.getElementById('oldPrice').value),
+                rentPrice: parseInt(document.getElementById('rentPrice').value),
+                rating: parseFloat(document.getElementById('rating').value),
+                ratingCount: parseInt(document.getElementById('ratingCount').value),
+                badge: badgeType ? { type: badgeType, text: badgeText || badgeType } : null,
+                image: image,
+                features: document.getElementById('features').value.split(',').map(f => f.trim()).filter(Boolean),
+                descriptionBuy: document.getElementById('descriptionBuy').value,
+                descriptionRent: document.getElementById('descriptionRent').value
+            };
+            if (id) {
+                const idx = products.findIndex(p => p.id === parseInt(id));
+                if (idx !== -1) { products[idx] = { ...products[idx], ...data }; }
+                showToast('Product updated successfully');
+            } else {
+                data.id = Date.now();
+                products.push(data);
+                showToast('Product added successfully');
+            }
+            saveData();
+            renderProducts();
+            closeModal();
+        });
+
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            saveData();
+            renderProducts();
+            showToast('Product deleted');
+        }
+
+        function logout() { localStorage.removeItem('admin_logged_in'); window.location.href = 'index.html'; }
+
+        document.body.style.background = 'linear-gradient(135deg, rgba(9,9,11,0.8), rgba(9,9,11,0.9)), url(\'../../images/Background.png\') center/cover fixed';
+
+        loadData();
+    </script>
+</body>
+</html>

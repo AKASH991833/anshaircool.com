@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Rajesh Kumar",
+    "location": "Mumbai, Maharashtra",
+    "avatar": "https://randomuser.me/api/portraits/men/32.jpg",
+    "rating": 5,
+    "text": "The cooling performance is exceptional. Room reaches desired temp in minutes. Installation team was professional and quick."
+  },
+  {
+    "id": 2,
+    "name": "Priya Sharma",
+    "location": "Bangalore, Karnataka",
+    "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
+    "rating": 5,
+    "text": "Best AC purchase ever! Inverter tech really saves electricity. WiFi control is so convenient. Highly recommended!"
+  },
+  {
+    "id": 3,
+    "name": "Amit Patel",
+    "location": "Ahmedabad, Gujarat",
+    "avatar": "https://randomuser.me/api/portraits/men/67.jpg",
+    "rating": 4.5,
+    "text": "Ultra-silent model is perfect for bedroom. Sleep peacefully without noise. Great build quality too!"
+  },
+  {
+    "id": 4,
+    "name": "Sneha Reddy",
+    "location": "Hyderabad, Telangana",
+    "avatar": "https://randomuser.me/api/portraits/women/68.jpg",
+    "rating": 5,
+    "text": "The AMC plan is fantastic! Regular maintenance visits keep my AC running perfectly year-round."
+  }
+]

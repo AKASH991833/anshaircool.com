@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}Features - Ansh Air Cool{% endblock %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Features Management</h1>
+    <a href="/admin/features/add" class="btn"><i class="fas fa-plus"></i> Add New Feature</a>
+</div>
+
+<table>
+    <thead>
+        <tr><th>Order</th><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+        {% for f in features %}
+        <tr>
+            <td>{{ f.display_order }}</td>
+            <td><i class="fas {{ f.icon }}" style="font-size: 1.25rem; color: #06b6d4;"></i></td>
+            <td><strong>{{ f.title }}</strong></td>
+            <td>{{ f.description[:60] }}{% if f.description|length > 60 %}...{% endif %}</td>
+            <td>
+                <a href="/admin/features/edit/{{ f.id }}" class="action-btn edit"><i class="fas fa-edit"></i></a>
+                <a href="/admin/features/delete/{{ f.id }}" class="action-btn delete" onclick="return confirm('Delete this feature?')"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state"><i class="fas fa-gem"></i><p>No features yet. Add your first feature!</p></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

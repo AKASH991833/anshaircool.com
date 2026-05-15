@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if feature else 'Add' }} Feature - Ansh Air Cool{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 2rem;">{{ 'Edit' if feature else 'Add' }} Feature</h1>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label>Icon (Font Awesome class, e.g. fa-gem, fa-wifi, fa-bolt)</label>
+            <input type="text" name="icon" value="{{ feature.icon if feature else 'fa-star' }}" required placeholder="fa-icon-name">
+        </div>
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" value="{{ feature.title if feature else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" required>{{ feature.description if feature else '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" name="display_order" value="{{ feature.display_order if feature else 0 }}" min="0">
+        </div>
+        <button type="submit" class="btn"><i class="fas fa-save"></i> {{ 'Update' if feature else 'Save' }} Feature</button>
+        <a href="/admin/features" class="btn btn-secondary" style="margin-left: 1rem;"><i class="fas fa-times"></i> Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Ansh Pro Cool Split",
+    "category": "Split AC",
+    "buyPrice": 42999,
+    "rentPrice": 2499,
+    "oldPrice": 52999,
+    "rating": 4.5,
+    "ratingCount": 2847,
+    "badge": { "type": "best-seller", "text": "Best Seller" },
+    "features": ["5 Star", "Inverter", "Cool"],
+    "image": "images/split-ac.jpg",
+    "descriptionBuy": "Premium 5-star inverter split AC with advanced cooling technology. Perfect for homes and offices with energy savings up to 60%. Comes with 10-year compressor warranty and free installation.",
+    "descriptionRent": "Rent this premium split AC for your space. Includes free maintenance, 24/7 support, and no deposit required. Flexible rental terms with easy upgrade options."
+  },
+  {
+    "id": 2,
+    "name": "Ansh Elite Window",
+    "category": "Window AC",
+    "buyPrice": 32499,
+    "rentPrice": 1799,
+    "oldPrice": 38999,
+    "rating": 5.0,
+    "ratingCount": 1523,
+    "badge": { "type": "new", "text": "New" },
+    "features": ["4 Star", "Auto", "Easy Install"],
+    "image": "images/window-ac.jpg",
+    "descriptionBuy": "Energy-efficient 4-star window AC with quick cooling and auto mode. Easy installation, low noise operation. Perfect for bedrooms and small rooms with durable build quality.",
+    "descriptionRent": "Affordable window AC rental solution. Complete maintenance included. Great for rented apartments, offices, and seasonal needs. Quick installation within 24 hours."
+  },
+  {
+    "id": 3,
+    "name": "Ansh Max Inverter Pro",
+    "category": "Inverter AC",
+    "buyPrice": 54999,
+    "rentPrice": 3299,
+    "oldPrice": 68999,
+    "rating": 5.0,
+    "ratingCount": 3291,
+    "badge": { "type": "hot", "text": "Hot" },
+    "features": ["5 Star", "Variable", "Auto Clean"],
+    "image": "images/cassette-ac.jpg",
+    "descriptionBuy": "Top-of-the-line 5-star inverter AC with variable speed compressor. Ultra-quiet operation, auto-clean feature, and maximum energy efficiency. Best for large rooms and commercial spaces.",
+    "descriptionRent": "Premium cassette AC on rent for large spaces. Includes quarterly maintenance, priority support, and flexible upgrade options. Perfect for offices, shops, and large rooms."
+  }
+]

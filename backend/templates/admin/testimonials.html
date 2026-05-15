@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}Testimonials - Ansh Air Cool{% endblock %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Testimonials Management</h1>
+    <a href="/admin/testimonials/add" class="btn"><i class="fas fa-plus"></i> Add Testimonial</a>
+</div>
+
+<table>
+    <thead>
+        <tr><th>Order</th><th>Name</th><th>Location</th><th>Rating</th><th>Preview</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+        {% for t in testimonials %}
+        <tr>
+            <td>{{ t.display_order }}</td>
+            <td><strong>{{ t.name }}</strong></td>
+            <td>{{ t.location }}</td>
+            <td>
+                {% for i in range(t.rating|int) %}
+                <i class="fas fa-star" style="color: #f59e0b; font-size: 0.85rem;"></i>
+                {% endfor %}
+                {% if t.rating % t.rating|int != 0 %}
+                <i class="fas fa-star-half-alt" style="color: #f59e0b; font-size: 0.85rem;"></i>
+                {% endif %}
+                <span style="margin-left: 0.5rem; font-size: 0.85rem;">{{ t.rating }}</span>
+            </td>
+            <td>{{ t.text[:50] }}{% if t.text|length > 50 %}...{% endif %}</td>
+            <td>
+                <a href="/admin/testimonials/edit/{{ t.id }}" class="action-btn edit"><i class="fas fa-edit"></i></a>
+                <a href="/admin/testimonials/delete/{{ t.id }}" class="action-btn delete" onclick="return confirm('Delete this testimonial?')"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty-state"><i class="fas fa-comments"></i><p>No testimonials yet. Add your first one!</p></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

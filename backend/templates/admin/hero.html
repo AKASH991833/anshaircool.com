@@ -1,0 +1,125 @@
+{% extends "admin/base.html" %}
+{% block title %}Hero Section - Ansh Air Cool{% endblock %}
+{% block content %}
+<div class="header">
+    <div><h1>Hero Section Editor</h1><p style="color: #6b7280;">Customize the main banner of your website</p></div>
+    <a href="/" class="btn" target="_blank"><i class="fas fa-eye"></i> View Website</a>
+</div>
+
+<div class="form-card">
+    <form method="POST" enctype="multipart/form-data">
+        <h3 style="margin-bottom: 1.5rem; color: #374151;">Main Content</h3>
+
+        <div class="form-group">
+            <label>Trust Badge Text</label>
+            <input type="text" name="trust_badge" value="{{ hero.trust_badge if hero else "India's #1 Trusted AC Brand" }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Title Line 1</label>
+                <input type="text" name="title_line1" value="{{ hero.title_line1 if hero else 'Experience' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Title Line 2 (Gradient)</label>
+                <input type="text" name="title_line2" value="{{ hero.title_line2 if hero else 'Ultimate Cooling' }}" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Title Line 3</label>
+                <input type="text" name="title_line3" value="{{ hero.title_line3 if hero else 'Like Never Before' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Subtitle</label>
+                <textarea name="subtitle" rows="3" required>{{ hero.subtitle if hero else 'Advanced inverter technology that saves up to 60% electricity' }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Starting Price (₹)</label>
+                <input type="number" name="starting_price" value="{{ hero.starting_price if hero else 32499 }}" required>
+            </div>
+            <div class="form-group">
+                <label>Old Price (₹)</label>
+                <input type="number" name="old_price" value="{{ hero.old_price if hero else 38999 }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Hero Image</label>
+            {% if hero and hero.image %}
+            <div style="margin-bottom: 0.75rem;">
+                <img src="/images/{{ hero.image.replace('images/', '') }}" alt="Current" style="width: 120px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb;">
+            </div>
+            {% endif %}
+            <input type="file" name="image" accept="image/*">
+            <input type="hidden" name="existing_image" value="{{ hero.image if hero else 'images/split-ac.jpg' }}">
+        </div>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+        <h3 style="margin-bottom: 1rem; color: #374151;">Quick Features (Badges under title)</h3>
+        <table id="qfTable" style="margin-bottom: 1rem;">
+            <thead><tr><th>Icon Class</th><th>Text</th><th></th></tr></thead>
+            <tbody>
+                {% for qf in (hero.quick_features if hero and hero.quick_features else [{"icon":"fa-bolt","text":"5 Star Rating"},{"icon":"fa-truck-fast","text":"Free Delivery"},{"icon":"fa-shield-halved","text":"10 Year Warranty"}]) %}
+                <tr>
+                    <td><input type="text" name="qf_icon[]" value="{{ qf.icon }}" style="width:120px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+                    <td><input type="text" name="qf_title[]" value="{{ qf.text }}" style="width:100%;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+                    <td><button type="button" class="action-btn delete" onclick="this.closest('tr').remove()"><i class="fas fa-times"></i></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addQFRow()"><i class="fas fa-plus"></i> Add Feature</button>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+        <h3 style="margin-bottom: 1rem; color: #374151;">Statistics (Years, Customers, etc.)</h3>
+        <table id="statTable" style="margin-bottom: 1rem;">
+            <thead><tr><th>Count</th><th>Suffix</th><th>Label</th><th></th></tr></thead>
+            <tbody>
+                {% for st in (hero.stats if hero and hero.stats else [{"count":15,"suffix":"+","label":"Years Experience"},{"count":50,"suffix":"K+","label":"Happy Customers"},{"count":99,"suffix":"%","label":"Satisfaction Rate"}]) %}
+                <tr>
+                    <td><input type="number" name="stat_count[]" value="{{ st.count }}" style="width:100px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+                    <td><input type="text" name="stat_suffix[]" value="{{ st.suffix }}" style="width:80px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+                    <td><input type="text" name="stat_label[]" value="{{ st.label }}" style="width:100%;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+                    <td><button type="button" class="action-btn delete" onclick="this.closest('tr').remove()"><i class="fas fa-times"></i></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addStatRow()"><i class="fas fa-plus"></i> Add Stat</button>
+
+        <hr style="margin: 2rem 0; border: none; border-top: 1px solid #e5e7eb;">
+
+        <button type="submit" class="btn"><i class="fas fa-save"></i> Save Hero Section</button>
+        <a href="/admin/dashboard" class="btn btn-secondary" style="margin-left: 1rem;"><i class="fas fa-times"></i> Cancel</a>
+    </form>
+</div>
+
+<script>
+function addQFRow() {
+    const tbody = document.querySelector('#qfTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" name="qf_icon[]" value="fa-star" style="width:120px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+        <td><input type="text" name="qf_title[]" placeholder="Feature text" style="width:100%;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+        <td><button type="button" class="action-btn delete" onclick="this.closest('tr').remove()"><i class="fas fa-times"></i></button></td>`;
+    tbody.appendChild(tr);
+}
+function addStatRow() {
+    const tbody = document.querySelector('#statTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="number" name="stat_count[]" value="0" style="width:100px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+        <td><input type="text" name="stat_suffix[]" value="+" style="width:80px;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+        <td><input type="text" name="stat_label[]" placeholder="Label" style="width:100%;padding:0.5rem;border:1px solid #e5e7eb;border-radius:6px;"></td>
+        <td><button type="button" class="action-btn delete" onclick="this.closest('tr').remove()"><i class="fas fa-times"></i></button></td>`;
+    tbody.appendChild(tr);
+}
+</script>
+{% endblock %}

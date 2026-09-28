@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if testimonial else 'Add' }} Testimonial - Ansh Air Cool{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 2rem;">{{ 'Edit' if testimonial else 'Add' }} Testimonial</h1>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Customer Name *</label>
+                <input type="text" name="name" value="{{ testimonial.name if testimonial else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="location" value="{{ testimonial.location if testimonial else '' }}" placeholder="Mumbai, Maharashtra">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Rating (1-5)</label>
+                <input type="number" name="rating" value="{{ testimonial.rating if testimonial else 5 }}" min="1" max="5" step="0.5">
+            </div>
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="display_order" value="{{ testimonial.display_order if testimonial else 0 }}" min="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Avatar URL</label>
+            <input type="url" name="avatar" value="{{ testimonial.avatar if testimonial else '' }}" placeholder="https://randomuser.me/api/portraits/men/xx.jpg">
+            {% if testimonial and testimonial.avatar %}
+            <div style="margin-top: 0.5rem;">
+                <img src="{{ testimonial.avatar }}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+            </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>Testimonial Text *</label>
+            <textarea name="text" rows="4" required>{{ testimonial.text if testimonial else '' }}</textarea>
+        </div>
+        <button type="submit" class="btn"><i class="fas fa-save"></i> {{ 'Update' if testimonial else 'Save' }} Testimonial</button>
+        <a href="/admin/testimonials" class="btn btn-secondary" style="margin-left: 1rem;"><i class="fas fa-times"></i> Cancel</a>
+    </form>
+</div>
+{% endblock %}

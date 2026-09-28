@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Admin</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fas fa-wind"></i><h2>ANSH ADMIN</h2></div>
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="products.html" class="nav-link"><i class="fas fa-box"></i> Products</a>
+            <a href="services.html" class="nav-link"><i class="fas fa-tools"></i> Services</a>
+            <a href="orders.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="contacts.html" class="nav-link active"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+            <a href="../../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt"></i> Website</a>
+            <a href="#" class="nav-link logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar"><h1>Contact Messages</h1></header>
+        <div class="card">
+            <div class="inline-flex" style="gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+                <div class="form-group" style="max-width:400px;margin:0;">
+                    <input type="text" id="contactSearch" class="search-input" placeholder="Search messages..." oninput="renderContacts()">
+                </div>
+                <button onclick="exportContacts()" class="btn-sm add" title="Export to CSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="contactsTable"></tbody>
+            </table>
+            <div class="pagination" id="contactsPagination"></div>
+        </div>
+    </main>
+
+    <script src="../assets/js/admin.js"></script>
+    <script>
+        if (!localStorage.getItem('admin_logged_in')) window.location.href = 'index.html';
+
+        let contacts = [];
+        let contactsPage = 1;
+        const PER_PAGE = 10;
+        let allFilteredContacts = [];
+
+        function loadContacts() {
+            const saved = localStorage.getItem('transparentdb_contacts');
+            if (saved) {
+                try { contacts = JSON.parse(saved); } catch(e) { contacts = []; }
+            }
+            renderContacts();
+        }
+
+        function renderContacts() {
+            const tbody = document.getElementById('contactsTable');
+            const search = (document.getElementById('contactSearch')?.value || '').toLowerCase();
+            let filtered = contacts;
+            if (search) filtered = contacts.filter(c => c.name.toLowerCase().includes(search) || c.email.toLowerCase().includes(search) || c.message.toLowerCase().includes(search));
+            filtered = filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            allFilteredContacts = filtered;
+            const totalPages = Math.ceil(filtered.length / PER_PAGE) || 1;
+            if (contactsPage > totalPages) contactsPage = totalPages;
+            const start = (contactsPage - 1) * PER_PAGE;
+            const pageItems = filtered.slice(start, start + PER_PAGE);
+
+            if (!pageItems.length) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No messages yet. Customer inquiries will appear here.</td></tr>';
+                document.getElementById('contactsPagination').innerHTML = '';
+                return;
+            }
+            tbody.innerHTML = pageItems.map(c => `
+                <tr style="${!c.read ? 'font-weight:600;' : ''}">
+                    <td>${new Date(c.date).toLocaleDateString()}</td>
+                    <td>${c.name}</td>
+                    <td><a href="mailto:${c.email}" style="color:var(--primary);">${c.email}</a></td>
+                    <td>${c.phone || '-'}</td>
+                    <td class="text-truncate" style="max-width:250px;" title="${c.message}">${c.message}</td>
+                    <td>${c.read ? '<span style="color:var(--text-muted)">Read</span>' : '<span style="color:#10b981">New</span>'}</td>
+                    <td>
+                        <button class="btn-sm edit" onclick="toggleRead(${c.id})" title="Mark as read/unread"><i class="fas ${c.read ? 'fa-envelope' : 'fa-envelope-open'}"></i></button>
+                        <button class="btn-sm delete" onclick="deleteContact(${c.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('contactsPagination').innerHTML = paginationHTML(totalPages, contactsPage, 'goContactsPage');
+        }
+
+        function goContactsPage(p) { contactsPage = p; renderContacts(); }
+
+        function exportContacts() {
+            if (!allFilteredContacts.length) { alert('No messages to export.'); return; }
+            const headers = ['Date','Name','Email','Phone','Message','Status'];
+            const rows = allFilteredContacts.map(c => [
+                new Date(c.date).toLocaleDateString(), c.name, c.email, c.phone || '', c.message, c.read ? 'Read' : 'New'
+            ]);
+            downloadCSV(headers, rows, 'contacts-export.csv');
+        }
+
+        function toggleRead(id) {
+            const c = contacts.find(x => x.id === id);
+            if (c) { c.read = !c.read; }
+            localStorage.setItem('transparentdb_contacts', JSON.stringify(contacts));
+            if (typeof logActivity === 'function') logActivity('Message #' + id + ' toggled read/unread');
+            renderContacts();
+        }
+
+        function deleteContact(id) {
+            if (!confirm('Delete this message?')) return;
+            contacts = contacts.filter(c => c.id !== id);
+            localStorage.setItem('transparentdb_contacts', JSON.stringify(contacts));
+            if (typeof logActivity === 'function') logActivity('Message #' + id + ' deleted');
+            renderContacts();
+        }
+
+        function logout() { localStorage.removeItem('admin_logged_in'); window.location.href = 'index.html'; }
+
+        document.body.style.background = 'linear-gradient(135deg, rgba(9,9,11,0.8), rgba(9,9,11,0.9)), url(\'../../images/Background.png\') center/cover fixed';
+
+        loadContacts();
+    </script>
+</body>
+</html>

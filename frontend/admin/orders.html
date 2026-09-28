@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - Admin</title>
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header"><i class="fas fa-wind"></i><h2>ANSH ADMIN</h2></div>
+        <nav class="nav-menu">
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="products.html" class="nav-link"><i class="fas fa-box"></i> Products</a>
+            <a href="services.html" class="nav-link"><i class="fas fa-tools"></i> Services</a>
+            <a href="orders.html" class="nav-link active"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="contacts.html" class="nav-link"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+            <a href="../../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt"></i> Website</a>
+            <a href="#" class="nav-link logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <h1>Orders & Bookings</h1>
+            <div class="inline-flex">
+                <select id="orderFilter" onchange="renderOrders()" class="filter-select">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+                <select id="typeFilter" onchange="renderOrders()" class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="service">Services</option>
+                    <option value="product">Products</option>
+                </select>
+            </div>
+        </header>
+        <div class="card">
+            <div class="inline-flex" style="gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+                <div class="form-group" style="max-width:400px;margin:0;">
+                    <input type="text" id="orderSearch" placeholder="Search orders..." oninput="renderOrders()" class="search-input">
+                </div>
+                <button onclick="exportOrders()" class="btn-sm add" title="Export to CSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Date</th><th>Type</th><th>Item</th><th>Price</th><th>Mode</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="ordersTable"></tbody>
+            </table>
+            <div class="pagination" id="ordersPagination"></div>
+        </div>
+    </main>
+
+    <script src="../assets/js/admin.js"></script>
+    <script>
+        if (!localStorage.getItem('admin_logged_in')) window.location.href = 'index.html';
+
+        function loadOrders() {
+            let orders = JSON.parse(localStorage.getItem('transparentdb_orders') || '[]');
+            if (orders.length === 0) {
+                orders = [
+                    {id:1, type:'service', item:'AC Installation', serviceId:1, date:new Date().toISOString(), status:'pending'},
+                    {id:2, type:'product', item:'Ansh Pro Cool Split', price:'₹42,999', mode:'buy', date:new Date(Date.now() - 86400000).toISOString(), status:'confirmed'}
+                ];
+                localStorage.setItem('transparentdb_orders', JSON.stringify(orders));
+            }
+            renderOrders(orders);
+        }
+
+        let ordersPage = 1;
+        const PER_PAGE = 10;
+        let allFilteredOrders = [];
+
+        function renderOrders() {
+            let orders = JSON.parse(localStorage.getItem('transparentdb_orders') || '[]');
+            const statusFilter = document.getElementById('orderFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const search = document.getElementById('orderSearch').value.toLowerCase();
+            if (statusFilter !== 'all') orders = orders.filter(o => o.status === statusFilter);
+            if (typeFilter !== 'all') orders = orders.filter(o => o.type === typeFilter);
+            if (search) orders = orders.filter(o => o.item.toLowerCase().includes(search));
+            orders = orders.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            allFilteredOrders = orders;
+
+            const totalPages = Math.ceil(orders.length / PER_PAGE) || 1;
+            if (ordersPage > totalPages) ordersPage = totalPages;
+            const start = (ordersPage - 1) * PER_PAGE;
+            const pageItems = orders.slice(start, start + PER_PAGE);
+
+            const tbody = document.getElementById('ordersTable');
+            if (!pageItems.length) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No orders found.</td></tr>';
+                document.getElementById('ordersPagination').innerHTML = '';
+                return;
+            }
+            tbody.innerHTML = pageItems.map(o => `
+                <tr>
+                    <td>${new Date(o.date).toLocaleDateString()}</td>
+                    <td><span class="badge" style="background:${o.type === 'service' ? 'rgba(59,130,246,0.2)' : 'rgba(16,185,129,0.2)'};border-color:${o.type === 'service' ? 'rgba(59,130,246,0.4)' : 'rgba(16,185,129,0.4)'};color:${o.type === 'service' ? '#93c5fd' : '#6ee7b7'}">${o.type}</span></td>
+                    <td>${o.item}</td>
+                    <td>${o.price || '-'}</td>
+                    <td>${o.mode === 'rent' ? 'Rent' : o.mode === 'buy' ? 'Buy' : '-'}</td>
+                    <td><span class="badge" style="background:${statusColor(o.status)};border-color:${statusColor(o.status)}">${o.status}</span></td>
+                    <td>
+                        <select onchange="updateStatus(${o.id},this.value)" class="filter-select" style="padding:0.3rem;font-size:0.8rem;">
+                            <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="confirmed" ${o.status === 'confirmed' ? 'selected' : ''}>Confirm</option>
+                            <option value="completed" ${o.status === 'completed' ? 'selected' : ''}>Complete</option>
+                            <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancel</option>
+                        </select>
+                        <button class="btn-sm delete" onclick="deleteOrder(${o.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.getElementById('ordersPagination').innerHTML = paginationHTML(totalPages, ordersPage, 'goOrderPage');
+        }
+
+        function goOrderPage(p) { ordersPage = p; renderOrders(); }
+
+        function exportOrders() {
+            if (!allFilteredOrders.length) { alert('No orders to export.'); return; }
+            const headers = ['Date','Type','Item','Price','Mode','Status'];
+            const rows = allFilteredOrders.map(o => [
+                new Date(o.date).toLocaleDateString(), o.type, o.item, o.price || '', o.mode || '', o.status
+            ]);
+            downloadCSV(headers, rows, 'orders-export.csv');
+        }
+
+        function statusColor(s) {
+            const map = {pending:'rgba(245,158,11,0.3)', confirmed:'rgba(59,130,246,0.3)', completed:'rgba(16,185,129,0.3)', cancelled:'rgba(239,68,68,0.3)'};
+            return map[s] || 'rgba(255,255,255,0.2)';
+        }
+
+        function updateStatus(id, status) {
+            logActivity('Order #' + id + ' → ' + status);
+            let orders = JSON.parse(localStorage.getItem('transparentdb_orders') || '[]');
+            const o = orders.find(x => x.id === id);
+            if (o) o.status = status;
+            localStorage.setItem('transparentdb_orders', JSON.stringify(orders));
+            renderOrders();
+        }
+
+        function deleteOrder(id) {
+            if (!confirm('Delete this order?')) return;
+            let orders = JSON.parse(localStorage.getItem('transparentdb_orders') || '[]');
+            orders = orders.filter(o => o.id !== id);
+            localStorage.setItem('transparentdb_orders', JSON.stringify(orders));
+            renderOrders();
+        }
+
+        function logout() { localStorage.removeItem('admin_logged_in'); window.location.href = 'index.html'; }
+
+        document.body.style.background = 'linear-gradient(135deg, rgba(9,9,11,0.8), rgba(9,9,11,0.9)), url(\'../../images/Background.png\') center/cover fixed';
+
+        loadOrders();
+    </script>
+</body>
+</html>

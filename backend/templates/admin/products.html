@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Products Management</h1>
+    <a href="/admin/products/add" class="btn"><i class="fas fa-plus"></i> Add New Product</a>
+</div>
+
+<table>
+    <thead>
+        <tr><th>ID</th><th>Image</th><th>Name</th><th>Category</th><th>Buy Price</th><th>Rent Price</th><th>Badge</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>
+                <img src="/images/{{ (product.image or 'default.jpg').replace('images/', '') }}" alt="{{ product.name }}" 
+                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+            </td>
+            <td><strong>{{ product.name }}</strong></td>
+            <td>{{ product.category }}</td>
+            <td>₹{{ "{:,.0f}".format(product.buy_price) }}</td>
+            <td>₹{{ "{:,.0f}".format(product.rent_price) }}/mo</td>
+            <td>{% if product.badge %}<span class="badge badge-success">{{ product.badge }}</span>{% else %}<span style="color:#9ca3af;">—</span>{% endif %}</td>
+            <td>
+                <a href="/admin/products/edit/{{ product.id }}" class="action-btn edit"><i class="fas fa-edit"></i></a>
+                <a href="/admin/products/delete/{{ product.id }}" class="action-btn delete" onclick="return confirm('Delete this product?')"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="empty-state"><i class="fas fa-box"></i><p>No products yet.</p></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

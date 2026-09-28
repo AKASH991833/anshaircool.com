@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Ansh Air Cool</title>
+    <meta name="description" content="View our complete project gallery - AC installation, repair, and service work by Ansh Air Cool.">
+    <meta property="og:title" content="Gallery - Ansh Air Cool">
+    <meta property="og:description" content="View our complete project gallery - AC installation, repair, and service work by Ansh Air Cool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://anshaircool.com/gallery.html">
+    <meta property="og:image" content="https://anshaircool.com/images/Background.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M50 5 L55 35 L50 30 L45 35 Z' fill='url(%23g)'/%3E%3Cpath d='M50 95 L55 65 L50 70 L45 65 Z' fill='url(%23g)'/%3E%3Cpath d='M5 50 L35 55 L30 50 L35 45 Z' fill='url(%23g)'/%3E%3Cpath d='M95 50 L65 55 L70 50 L65 45 Z' fill='url(%23g)'/%3E%3Cpath d='M22 22 L42 42 L38 38 L42 34 Z' fill='url(%23g)'/%3E%3Cpath d='M78 78 L58 58 L62 62 L58 66 Z' fill='url(%23g)'/%3E%3Cpath d='M78 22 L58 42 L62 38 L58 34 Z' fill='url(%23g)'/%3E%3Cpath d='M22 78 L42 58 L38 62 L42 66 Z' fill='url(%23g)'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { background: url('images/Background.png') no-repeat center center fixed; background-size: cover; font-family: 'Inter', sans-serif; color: white; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(6,182,212,0.6); }
+        .gallery-page { padding: 6rem 0 4rem; min-height: 100vh; }
+        .gallery-page .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .gallery-page h1 { text-align: center; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 0.5rem; }
+        .gallery-page .subtitle { text-align: center; color: var(--text-muted, #d4d4d8); margin-bottom: 3rem; font-size: 1.1rem; }
+        .gallery-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .gallery-item { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.4s ease; aspect-ratio: 4/3; }
+        .gallery-item:hover { transform: translateY(-8px) scale(1.02); border-color: #06b6d4; box-shadow: 0 20px 40px rgba(6,182,212,0.2); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; font-size: 0.95rem; font-weight: 500; transform: translateY(100%); transition: transform 0.4s ease; }
+        .gallery-item:hover .gallery-caption { transform: translateY(0); }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-muted, #d4d4d8); text-decoration: none; margin-bottom: 2rem; transition: color 0.3s; }
+        .back-link:hover { color: #06b6d4; }
+        .gallery-lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 2rem; }
+        .gallery-lightbox.active { display: flex; }
+        .gallery-lightbox img { max-width: 90%; max-height: 85vh; border-radius: 12px; object-fit: contain; }
+        .gallery-lightbox .lightbox-close { position: absolute; top: 1.5rem; right: 2rem; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.3s; background: none; border: none; }
+        .gallery-lightbox .lightbox-close:hover { opacity: 1; }
+        .gallery-lightbox .lightbox-caption { position: absolute; bottom: 2rem; color: white; font-size: 1.1rem; text-align: center; }
+        .loading { text-align: center; padding: 4rem; color: var(--text-muted, #d4d4d8); }
+        .empty-state { text-align: center; padding: 4rem; color: var(--text-muted, #d4d4d8); }
+        .empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+        .progress-indicator { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 9999; background: transparent; }
+        .progress-indicator .progress-fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #22d3ee); width: 0%; transition: width 0.3s ease; }
+    </style>
+</head>
+<body>
+    <nav class="navbar" style="position:fixed;top:0;left:0;right:0;z-index:1000;">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-wind"></i></span>
+                <span class="logo-text">ANSH <span class="logo-ac">AIR COOL</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#services" class="nav-link">Services</a></li>
+                <li><a href="index.html#products" class="nav-link">Products</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="gallery-page">
+        <div class="container">
+            <a href="index.html#gallery" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+            <h1>Our <span style="background:linear-gradient(135deg,#06b6d4,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Work Gallery</span></h1>
+            <p class="subtitle">Browse all our installation, repair, and service projects</p>
+            <div id="galleryGridFull" class="gallery-grid-full"></div>
+        </div>
+    </section>
+
+    <div class="gallery-lightbox" id="galleryLightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <img id="lightboxImage" src="" alt="">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">ANSH AIR COOL</div>
+        <div class="loading-sub">Cooling Technology, Redefined</div>
+        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+    </div>
+
+    <div class="progress-indicator" id="progressIndicator">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <nav class="mobile-bottom-bar" id="mobileBottomBar">
+        <a href="index.html#home" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="index.html#services"><i class="fas fa-tools"></i><span>Services</span></a>
+        <a href="gallery.html"><i class="fas fa-images"></i><span>Gallery</span></a>
+        <a href="index.html#products"><i class="fas fa-snowflake"></i><span>Products</span></a>
+        <a href="index.html#contact"><i class="fas fa-phone-alt"></i><span>Contact</span></a>
+    </nav>
+
+    <a href="https://wa.me/919876543210?text=Hi%2C%20I'm%20interested%20in%20your%20AC%20products"
+       target="_blank"
+       class="whatsapp-chat"
+       id="whatsappChat"
+       aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="transparentdb/db.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 500);
+            const galleryData = await TransparentDB.gallery();
+            const grid = document.getElementById('galleryGridFull');
+            if (!galleryData || galleryData.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>No photos in gallery yet.</p></div>';
+                return;
+            }
+            grid.innerHTML = galleryData.map(item => `
+                <div class="gallery-item" onclick="openLightbox('${item.image.replace(/'/g, "\\'")}','${item.caption.replace(/'/g, "\\'")}')">
+                    <img src="${item.image}" alt="${item.caption}" loading="lazy">
+                    <div class="gallery-caption">${item.caption}</div>
+                </div>
+            `).join('');
+        });
+
+        function openLightbox(src, caption) {
+            document.getElementById('lightboxImage').src = src;
+            document.getElementById('lightboxCaption').textContent = caption || '';
+            document.getElementById('galleryLightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('galleryLightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.gallery-lightbox') && !e.target.closest('.lightbox-close') && !e.target.closest('#lightboxImage')) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+        // Progress indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            document.getElementById('progressFill').style.width = (winScroll / height) * 100 + '%';
+        });
+
+        // WhatsApp button visibility
+        const whatsappBtn = document.getElementById('whatsappChat');
+        if (whatsappBtn) {
+            window.addEventListener('scroll', () => {
+                whatsappBtn.classList.toggle('visible', window.pageYOffset > 500);
+            });
+        }
+
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        if (backToTop) {
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.pageYOffset > 500);
+            });
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Load settings for WhatsApp number
+        (async function loadGallerySettings() {
+            try {
+                const data = await TransparentDB.settings();
+                if (data && data.whatsappNumber) {
+                    const msg = data.whatsappMessage || "Hi, I'm interested in your AC products";
+                    const wa = document.getElementById('whatsappChat');
+                    if (wa) wa.href = 'https://wa.me/' + data.whatsappNumber.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(msg);
+                }
+            } catch(e) {}
+        })();
+    </script>
+</body>
+</html>

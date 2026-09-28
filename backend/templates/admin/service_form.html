@@ -1,0 +1,57 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if service else 'Add' }} Service - Ansh Air Cool{% endblock %}
+{% block content %}
+<h1 style="margin-bottom: 2rem;">{{ 'Edit' if service else 'Add' }} Service</h1>
+
+<div class="form-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% if service %}
+        <input type="hidden" name="existing_image" value="{{ service.image }}">
+        {% endif %}
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Service Title</label>
+                <input type="text" name="title" value="{{ service.title if service else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Icon (Font Awesome)</label>
+                <input type="text" name="icon" value="{{ service.icon if service else 'fa-wrench' }}" placeholder="fa-screwdriver-wrench">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" required>{{ service.description if service else '' }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" name="order_index" value="{{ service.order_index if service else 0 }}" min="1" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Service Image</label>
+            {% if service %}
+            <div style="margin-bottom: 0.75rem;">
+                <img src="/images/{{ (service.image or 'default.jpg').replace('images/', '') }}" alt="Current" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                <p style="margin-top: 0.5rem; color: #6b7280; font-size: 0.85rem;">Current: {{ service.image }}</p>
+            </div>
+            {% endif %}
+            <input type="file" name="image" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label>Features (one per line)</label>
+            <textarea name="features_text" rows="4" placeholder="Expert Technicians&#10;All Brands Supported&#10;Same Day Service">{% if features_list %}{% for f in features_list %}{{ f }}
+{% endfor %}{% endif %}</textarea>
+            <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.25rem;">Enter each feature on a new line</p>
+        </div>
+
+        <button type="submit" class="btn"><i class="fas fa-save"></i> {{ 'Update' if service else 'Save' }} Service</button>
+        <a href="/admin/services" class="btn btn-secondary" style="margin-left: 1rem;"><i class="fas fa-times"></i> Cancel</a>
+    </form>
+</div>
+{% endblock %}

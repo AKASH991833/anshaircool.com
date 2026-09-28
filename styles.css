@@ -6943,3 +6943,82 @@ html.mobile-menu-open {
 }
 .customer-rating {display:none}
 .about-customer-stats .customer-stat {background:rgba(28,20,28,0.76);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+
+/* Separate light-theme concept. Red version remains on main. */
+:root {
+  --bg-dark:#f5f9fc;--bg-card:#fff;--bg-card-hover:#f4fbff;
+  --text-primary:#14283a;--text-secondary:#34495e;--text-muted:#536779;
+  --border:rgba(21,66,86,.16);--border-hover:rgba(6,149,172,.36);
+  --glass-bg:rgba(255,255,255,.87);--glass-bg-light:rgba(255,255,255,.95);
+  --glass-border:rgba(21,66,86,.14);--glass-shadow:0 12px 28px rgba(30,63,83,.09);
+  --primary:#007f99;--primary-dark:#006980;--primary-light:#17a9c1;
+  --text-shadow:none;--text-shadow-sm:none;
+}
+body {background:linear-gradient(150deg,#ffffff 0%,#f3f9fc 48%,#eef6fa 100%);color:#14283a}
+h1,h2,h3,h4,h5,h6,p,span,a,li,label,input,textarea,button,
+.hero-title,.section-title,.hero-subtitle {text-shadow:none}
+body::before,.hacker-scanner,.hacker-overlay,.hero-bg-image,.hero-particles,
+.particles-container,.about-particles,.services-particles,.mesh-bg {display:none!important}
+.navbar,.navbar.scrolled {background:rgba(255,255,255,.93);border-bottom:1px solid #dce8ef;box-shadow:0 4px 20px rgba(20,52,72,.07)}
+.nav-link,.nav-link:hover,.nav-link.active,.logo-text {color:#14283a}
+.logo-icon,.btn-hero-primary,.btn-primary,.service-cta-btn,.add-to-cart-btn {color:#fff}
+.hero,.services,.features,.products,.about,.gallery,.testimonials,.faq-section,.contact {background:transparent!important}
+.hero {background:linear-gradient(145deg,#f7fbff,#e7f5fa)!important}
+.hero-title,.section-title,.section-subtitle,.hero-desc,.about-text {color:#14283a}
+.section-subtitle,.hero-desc,.about-text {color:#3a5265}
+.gradient-text {background:linear-gradient(135deg,#087d9c,#09a7c2);-webkit-background-clip:text;background-clip:text}
+.section-badge,.hero-badge {background:rgba(8,151,180,.08);border-color:rgba(8,151,180,.24);color:#08708b}
+.hero-product,.hero-product-price,.hero-product-badge,.hero-stat,.hero-features span {background:rgba(255,255,255,.94);border-color:rgba(38,92,113,.16);box-shadow:0 10px 26px rgba(24,70,90,.09);color:#14283a}
+.hero-product-price .price-label,.hero-product-badge span,.hero-stat-label {color:#536779}
+.service-card,.feature-card,.product-card,.testimonial-card,.faq-item,
+.contact-card,.hours-card,.contact-form,.about-service-item,
+.about-customer-stats .customer-stat {
+ background:rgba(255,255,255,.93);border-color:rgba(33,84,104,.16);
+ box-shadow:0 12px 30px rgba(29,75,97,.08);color:#14283a;
+}
+.service-card:hover,.feature-card:hover,.product-card:hover,.testimonial-card:hover,
+.faq-item:hover,.faq-item.active,.contact-card:hover,.about-service-item:hover {background:#fff}
+.product-card .product-info,.service-card .service-info {background:#fff}
+.service-card h3,.product-card h3,.feature-card h3,.about-service-item h4,
+.contact-card h4,.faq-question,.testimonial-card h3,.footer-title {color:#14283a}
+.service-description,.product-description,.feature-card p,.about-service-item p,
+.contact-card-content p,.contact-card-content span,.faq-answer,.customer-review,
+.customer-name,.section-subtitle {color:#3a5265}
+.service-features li,.product-category,.product-price-row,.hero-features span {color:#1f6072}
+.form-group input,.form-group select,.form-group textarea {background:#fff;color:#14283a;border-color:#c8d9e3;text-shadow:none}
+.form-group input::placeholder,.form-group textarea::placeholder {color:#6c8090}
+.form-group select option {background:#fff;color:#14283a}
+.form-group label {color:#203b4d}
+.footer {background:#e9f3f8;border-color:#cbdde7;color:#203b4d}
+.footer-about,.footer-links a,.footer-bottom p {color:#3a5265}
+.mobile-bottom-bar {background:rgba(255,255,255,.97);border-color:#d5e4ec;box-shadow:0 -3px 14px rgba(21,59,81,.08)}
+.mobile-bottom-bar a {color:#607484}
+.mobile-bottom-bar a.active {color:#007f99}
+@media(max-width:768px) {
+ .nav-links {background:rgba(255,255,255,.98)}
+ .contact-card,.contact-form,.service-card,.product-card,.feature-card,
+ .testimonial-card,.faq-item,.about-service-item,.hours-card {background:rgba(255,255,255,.96)}
+ .product-card .product-info,.service-card .service-info {background:#fff}
+ .contact-card-content p,.service-description,.product-description,
+ .feature-card p,.about-service-item p {color:#3a5265}
+}
+/* Finish the light concept: dark lettering and restrained AC illustration. */
+.hero-title,.hero-title .title-line,.hero-title .title-line:nth-child(1),
+.hero-title .title-line:nth-child(3),.hero-title.hacker-title .title-line,
+.hero-title.hacker-title .title-line:nth-child(1),.hero-title.hacker-title .title-line:nth-child(3) {
+  color:#14283a!important;-webkit-text-fill-color:#14283a!important;text-shadow:none!important;
+}
+.hero-title .gradient-text,.hero-title.hacker-title .gradient-text,
+.hero-title.hacker-title .title-line:nth-child(2) {
+ background:linear-gradient(130deg,#007d99,#0ab1c7)!important;
+ -webkit-background-clip:text!important;background-clip:text!important;
+ -webkit-text-fill-color:transparent!important;color:#078eaa!important;
+}
+.hero-product {background:transparent!important;box-shadow:none!important}
+.hero-product-badge .badge-text strong {color:#14283a}
+.hero-product-badge .badge-text span {color:#536779}
+.hero-product-img {box-shadow:0 15px 35px rgba(0,127,153,.14)}
+.hero-stats .hero-stat-label,.footer-brand .logo-text {color:#14283a}
+.section-title,.section-title span:not(.gradient-text) {color:#14283a}
+.btn-primary {background:#007f99;color:#fff;border-color:#007f99}
+.btn-primary:hover {background:#006e86;color:#fff}

@@ -76,52 +76,10 @@
         </form>
         
         <div class="hint">
-            <p>Default: <strong>admin</strong> / <strong>admin123</strong></p>
+            <p>Legacy demo admin is disabled. Use the Netlify Identity admin at <a href="/admin/">/admin/</a>.</p>
         </div>
     </div>
     
-    <script>
-        // Ensure defaults exist
-        if (!localStorage.getItem('admin_password')) localStorage.setItem('admin_password', 'admin123');
-        if (!localStorage.getItem('admin_username')) localStorage.setItem('admin_username', 'admin');
-
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            const savedUsername = localStorage.getItem('admin_username') || 'admin';
-            const savedPassword = localStorage.getItem('admin_password') || 'admin123';
-            
-            if (username === savedUsername && password === savedPassword) {
-                localStorage.setItem('admin_logged_in', 'true');
-                window.location.href = 'dashboard.html';
-            } else {
-                const err = document.getElementById('errorMsg');
-                err.textContent = 'Invalid username or password';
-                err.style.display = 'block';
-                
-                document.querySelector('.login-box').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.login-box').style.animation = '';
-                }, 500);
-            }
-        });
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                20%, 60% { transform: translateX(-10px); }
-                40%, 80% { transform: translateX(10px); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        document.body.style.background = `
-            linear-gradient(135deg, rgba(9,9,11,0.85), rgba(9,9,11,0.95)),
-            url('../../images/Background.png') center/cover fixed
-        `;
-    </script>
+    <script>window.location.replace("/admin/");</script>
 </body>
 </html>

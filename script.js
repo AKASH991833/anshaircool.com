@@ -79,15 +79,15 @@ async function loadData() {
 
 function renderHero(data) {
   const badge = document.querySelector('.hero-badge');
-  if (badge) badge.innerHTML = `<span class="badge-dot pulse"></span>${data.trustBadge || "India's #1 Trusted AC Brand"}`;
+  if (badge) { badge.replaceChildren(); const dot=document.createElement('span'); dot.className='badge-dot pulse'; badge.append(dot,document.createTextNode(data.trustBadge || 'AC Products & Services')); }
 
   const lines = document.querySelectorAll('.hero-line');
   if (lines[0]) lines[0].textContent = data.titleLine1 || 'Experience';
-  if (lines[1]) lines[1].innerHTML = `<span class="gradient-text">${data.titleLine2 || 'Ultimate Cooling'}</span>`;
+  if (lines[1]) { const gradient=document.createElement('span'); gradient.className='gradient-text'; gradient.textContent=data.titleLine2 || 'Ultimate Cooling'; lines[1].replaceChildren(gradient); }
   if (lines[2]) lines[2].textContent = data.titleLine3 || 'Like Never Before';
 
   const desc = document.querySelector('.hero-desc');
-  if (desc) desc.innerHTML = data.subtitle || '';
+  if (desc) desc.textContent = data.subtitle || '';
 
   const features = document.querySelector('.hero-features');
   if (features && data.quickFeatures) {
@@ -114,6 +114,7 @@ function renderHero(data) {
   if (priceOld) priceOld.textContent = data.oldPrice ? `₹${Number(data.oldPrice).toLocaleString()}` : '';
 }
 
+function escapeMarkup(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderServices(services) {
   const grid = document.querySelector('.services-grid');
   if (!grid) return;
@@ -123,16 +124,16 @@ function renderServices(services) {
       <div class="service-image-wrapper">
         <div class="service-glow"></div>
         <div class="service-image">
-          <img src="${s.image}" alt="${s.title}" loading="lazy">
+          <img src="${escapeMarkup(s.image)}" alt="${escapeMarkup(s.title)}" loading="lazy">
         </div>
       </div>
       <div class="service-info">
-        <h3 class="service-title">${s.title}</h3>
-        <p class="service-description">${s.description}</p>
+        <h3 class="service-title">${escapeMarkup(s.title)}</h3>
+        <p class="service-description">${escapeMarkup(s.description)}</p>
         <ul class="service-features">
           ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
         </ul>
-          <button class="service-cta-btn" data-service-id="${s.id}" data-service-title="${s.title}">
+          <button class="service-cta-btn" data-service-id="${escapeMarkup(s.id)}" data-service-title="${escapeMarkup(s.title)}">
             <span>Enquire Now</span>
             <i class="fas fa-arrow-right"></i>
           </button>
@@ -150,16 +151,16 @@ function renderServices(services) {
         <div class="service-image-wrapper">
           <div class="service-glow"></div>
           <div class="service-image">
-            <img src="${s.image}" alt="${s.title}" loading="lazy">
+            <img src="${escapeMarkup(s.image)}" alt="${escapeMarkup(s.title)}" loading="lazy">
           </div>
         </div>
         <div class="service-info">
-          <h3 class="service-title">${s.title}</h3>
-          <p class="service-description">${s.description}</p>
+          <h3 class="service-title">${escapeMarkup(s.title)}</h3>
+          <p class="service-description">${escapeMarkup(s.description)}</p>
           <ul class="service-features">
             ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
           </ul>
-           <button class="service-cta-btn" data-service-id="${s.id}" data-service-title="${s.title}">
+           <button class="service-cta-btn" data-service-id="${escapeMarkup(s.id)}" data-service-title="${escapeMarkup(s.title)}">
             <span>Enquire Now</span>
             <i class="fas fa-arrow-right"></i>
           </button>
@@ -263,9 +264,9 @@ function updateFooter(settings) {
   if (logo) {
     const parts = (settings.siteName || 'ANSH AIR COOL').split(' ');
     if (parts.length >= 2) {
-      logo.innerHTML = `${parts.slice(0, -1).join(' ')} <span class="logo-ac">${parts[parts.length - 1]}</span>`;
+      logo.innerHTML = `${escapeMarkup(parts.slice(0, -1).join(' '))} <span class="logo-ac">${escapeMarkup(parts[parts.length - 1])}</span>`;
     } else {
-      logo.innerHTML = `${parts[0]} <span class="logo-ac"></span>`;
+      logo.innerHTML = `${escapeMarkup(parts[0])} <span class="logo-ac"></span>`;
     }
   }
   const about = document.querySelector('.footer-about');
@@ -931,3 +932,10 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Privacy-light visitor metric, one count per browser per day. Failure never blocks the site.
+if (location.hostname.endsWith('.netlify.app')) {
+  window.addEventListener('load', () => {
+    fetch('/.netlify/functions/visit', {method:'POST',credentials:'same-origin',keepalive:true}).catch(()=>{});
+  }, {once:true});
+}

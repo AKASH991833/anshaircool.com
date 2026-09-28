@@ -37,3 +37,8 @@ errors.log
 
 # Generated publication output
 public/
+
+node_modules/
+
+# Local Netlify folder
+.netlify

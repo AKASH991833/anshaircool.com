@@ -125,11 +125,11 @@
             }, 500);
             const galleryData = await TransparentDB.gallery();
             const grid = document.getElementById('galleryGridFull');
-            if (!galleryData || galleryData.length === 0) {
+            if (!galleryData || !galleryData.some(item => !item.category || item.category === 'work')) {
                 grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>No photos in gallery yet.</p></div>';
                 return;
             }
-            grid.replaceChildren(); galleryData.forEach(item => { const tile=document.createElement('div'); tile.className='gallery-item'; const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy'; const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption; tile.append(image,caption); tile.addEventListener('click',()=>openLightbox(item.image,item.caption)); grid.append(tile); });
+            grid.replaceChildren(); galleryData.filter(item => !item.category || item.category === 'work').forEach(item => { const tile=document.createElement('div'); tile.className='gallery-item'; const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy'; const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption; tile.append(image,caption); tile.addEventListener('click',()=>openLightbox(item.image,item.caption)); grid.append(tile); });
         });
 
         function openLightbox(src, caption) {

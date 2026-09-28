@@ -886,19 +886,25 @@ function initServiceBookings() {
 }
 
 function renderGallery(items) {
-  const grid = document.getElementById('galleryGrid');
-  if (!grid) return;
-  grid.replaceChildren();
-  for (const item of items.slice(0, 3)) {
-    const tile = document.createElement('div'); tile.className='gallery-item';
-    const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy';
-    const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption;
-    tile.append(image,caption);
-    tile.addEventListener('click',()=>window.openGalleryLightbox(item.image,item.caption));
-    grid.append(tile);
+  const work = items.filter(item => !item.category || item.category === 'work');
+  const rent = items.filter(item => item.category === 'rent');
+  for (const [id,photos] of [['galleryGrid',work],['rentPhotoGrid',rent]]) {
+    const grid = document.getElementById(id);
+    if (!grid) continue;
+    grid.replaceChildren();
+    for (const item of photos) {
+      const tile = document.createElement('div'); tile.className='gallery-item';
+      const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy';
+      const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption;
+      tile.append(image,caption);
+      tile.addEventListener('click',()=>window.openGalleryLightbox(item.image,item.caption));
+      grid.append(tile);
+    }
   }
+  const rentSection=document.getElementById('rentPhotos');
+  if(rentSection) rentSection.hidden=rent.length===0;
   const viewAll=document.getElementById('galleryViewAll');
-  if (viewAll) viewAll.style.display=items.length>3?'block':'none';
+  if (viewAll) viewAll.style.display=work.length>0?'block':'none';
 }
 
 window.openGalleryLightbox = function(src, caption) {

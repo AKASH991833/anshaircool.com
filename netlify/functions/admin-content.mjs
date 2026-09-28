@@ -22,7 +22,7 @@ function validate(table, payload) {
     ['trustBadge','titleLine1','titleLine2','titleLine3','subtitle'].every(k => safeText(payload[k], k === 'subtitle' ? 400 : 80))
   return Array.isArray(payload) && payload.length <= 60 && payload.every(x =>
     Number.isSafeInteger(x.id) && x.id > 0 && safeText(x.caption, 240) &&
-    typeof x.image === 'string' && /^images\/[a-z0-9-]+\.(?:webp|png|jpe?g)$/.test(x.image)) &&
+    (x.category === undefined || x.category === 'work' || x.category === 'rent') && typeof x.image === 'string' && /^images\/[a-z0-9-]+\.(?:webp|png|jpe?g)$/.test(x.image)) &&
     new Set(payload.map(x => x.id)).size === payload.length
 }
 export default async (req) => {

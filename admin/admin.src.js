@@ -3,7 +3,7 @@ const $=s=>document.querySelector(s)
 const owner='akashvishwakarma1262@gmail.com'
 let heroSha,gallerySha,gallery=[]
 let inviteToken,recoveryMode=false
-function status(message,auth=false){$(auth?'#loginStatus':'#status').textContent=message}
+function status(message,auth=false){const el=$(auth?'#loginStatus':'#status');el.textContent=message;el.className=/fail|error|must|invalid|too many|not verified|denied|unexpected|under 3 ?mb|choose an image|enter your email|at least|not found/i.test(message)?'err':'ok'}
 async function api(path,options={}) {
   const r=await fetch('/.netlify/functions/'+path,{...options,credentials:'same-origin',headers:{...options.headers}})
   const j=await r.json().catch(()=>({error:'Unexpected server reply'}))

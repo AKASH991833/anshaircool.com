@@ -5,7 +5,7 @@ load_dotenv()
 
 class Config:
     """Base configuration"""
-    SECRET_KEY = os.getenv('FLASK_SECRET_KEY', 'fallback-secret-key-change-in-production')
+    SECRET_KEY = os.environ['FLASK_SECRET_KEY']
     MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
     MYSQL_PORT = int(os.getenv('MYSQL_PORT', 3306))
     MYSQL_USER = os.getenv('MYSQL_USER', 'root')

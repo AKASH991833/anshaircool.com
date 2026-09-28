@@ -31,6 +31,7 @@ test('tokens only in server files',()=>{
 test('server parsers constrain gallery upload and field shapes',()=>{
   assert.match(upload,/file\.size > 3_000_000/)
   assert.match(upload,/File content does not match its image type/)
+  assert.match(upload,/validImage\(bytes, file.type\)/)
   assert.match(content,/new Set\(payload\.map\(x => x\.id\)\)\.size/)
   assert.match(content,/body\.sha !== entry\.sha/)
 })

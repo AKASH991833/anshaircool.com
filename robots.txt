@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /frontend/admin/
+Sitemap: https://anshaircool.netlify.app/sitemap.xml

@@ -2,55 +2,79 @@
   {
     "id": 1,
     "title": "AC Installation",
-    "description": "Professional setup for Split, Window & Cassette ACs with zero damage guarantee and free demo.",
-    "image": "images/ac-installation.jpg",
+    "description": "Ask about ac installation. Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/ac-installation.webp",
     "icon": "fa-screwdriver-wrench",
-    "features": ["Expert Technicians", "All Brands Supported", "Same Day Service"],
+    "features": [
+      "Split, window and cassette AC enquiries",
+      "Site requirements to be confirmed",
+      "Ask about installation terms"
+    ],
     "order": 1
   },
   {
     "id": 2,
     "title": "AC Cleaning & Service",
-    "description": "Deep cleaning with anti-bacterial foam wash for better cooling and healthy air quality.",
-    "image": "images/ac-cleaning.jpg",
+    "description": "Ask about ac cleaning & service. Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/ac-cleaning.webp",
     "icon": "fa-broom",
-    "features": ["Foam Wash Technology", "Filter Deep Cleaning", "Anti-Bacterial Treatment"],
+    "features": [
+      "Filter cleaning enquiries",
+      "Deep cleaning options",
+      "Ask about treatment methods"
+    ],
     "order": 2
   },
   {
     "id": 3,
     "title": "Gas Refill & Charging",
-    "description": "R410A & R32 gas refill with leak detection and pressure testing for optimal cooling.",
-    "image": "images/gas-refill.jpg",
+    "description": "Ask about gas refill & charging. Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/gas-refill.webp",
     "icon": "fa-snowflake",
-    "features": ["Genuine Gas Only", "Leak Detection", "Pressure Testing"],
+    "features": [
+      "Refrigerant compatibility check",
+      "Ask about leak detection",
+      "Pricing confirmed after inspection"
+    ],
     "order": 3
   },
   {
     "id": 4,
     "title": "AC Repair & Service",
-    "description": "Same-day repair for all AC brands with genuine spare parts and service warranty.",
-    "image": "images/ac-repair.jpg",
+    "description": "Ask about ac repair & service. Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/ac-repair.webp",
     "icon": "fa-wrench",
-    "features": ["All Brands Repaired", "Genuine Spare Parts", "30-Day Warranty"],
+    "features": [
+      "Describe the AC fault",
+      "Parts availability to be confirmed",
+      "Ask about warranty terms"
+    ],
     "order": 4
   },
   {
     "id": 5,
     "title": "Annual Maintenance (AMC)",
-    "description": "Yearly AMC plans with unlimited servicing, priority support & 20% discount on repairs.",
-    "image": "images/amc-service.jpg",
+    "description": "Ask about annual maintenance (amc). Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/amc-service.webp",
     "icon": "fa-clipboard-check",
-    "features": ["Unlimited Service Calls", "Priority Support", "20% Discount on Repairs"],
+    "features": [
+      "Ask about visit frequency",
+      "Coverage varies by plan",
+      "Request current plan terms"
+    ],
     "order": 5
   },
   {
     "id": 6,
     "title": "PCB Repair & Service",
-    "description": "Advanced PCB level repair for inverter ACs with component replacement and testing.",
-    "image": "images/pcb-repair.jpg",
+    "description": "Ask about pcb repair & service. Availability, scope and pricing are confirmed after an enquiry.",
+    "image": "images/pcb-repair.webp",
     "icon": "fa-microchip",
-    "features": ["Component Level Repair", "Inverter AC Specialist", "90-Day Warranty"],
+    "features": [
+      "Share the AC brand and model",
+      "Fault diagnosis required",
+      "Ask about parts and warranty"
+    ],
     "order": 6
   }
 ]

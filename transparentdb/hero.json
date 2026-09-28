@@ -1,20 +1,25 @@
 {
-  "trustBadge": "India's #1 Trusted AC Brand",
+  "trustBadge": "AC Products & Services",
   "titleLine1": "Experience",
   "titleLine2": "Ultimate Cooling",
   "titleLine3": "Like Never Before",
-  "subtitle": "Advanced inverter technology that saves <strong>up to 60% electricity</strong> while delivering lightning-fast cooling. Transform your space with Ansh Air Cool's premium AC solutions.",
-  "startingPrice": 32499,
-  "oldPrice": 38999,
-  "image": "images/split-ac.jpg",
+  "subtitle": "Explore AC products, installation, repair and maintenance. Share your requirements and confirm the details before booking.",
+  "startingPrice": null,
+  "oldPrice": null,
+  "image": "images/split-ac.webp",
   "quickFeatures": [
-    { "icon": "fa-bolt", "text": "5 Star Rating" },
-    { "icon": "fa-truck-fast", "text": "Free Delivery" },
-    { "icon": "fa-shield-halved", "text": "10 Year Warranty" }
+    {
+      "icon": "fa-snowflake",
+      "text": "AC service options"
+    },
+    {
+      "icon": "fa-comments",
+      "text": "Ask for availability"
+    },
+    {
+      "icon": "fa-shield-halved",
+      "text": "Confirm terms first"
+    }
   ],
-  "stats": [
-    { "count": 15, "suffix": "+", "label": "Years Experience" },
-    { "count": 50, "suffix": "K+", "label": "Happy Customers" },
-    { "count": 99, "suffix": "%", "label": "Satisfaction Rate" }
-  ]
+  "stats": []
 }

@@ -12,7 +12,7 @@ async function initApp() {
   initCounterAnimation();
   initFormSubmission();
   initSmoothScroll();
-  initCartButtons();
+  // Product buttons open an enquiry, not a browser-local order.
   initWhatsAppButton();
   initWishlistButtons();
   initPurchaseToggle();
@@ -25,17 +25,18 @@ async function initApp() {
   initProductCards();
   initTestimonialCarousel();
   initCountdown();
-  initHackerEffects();
+  // Keep the red glass visual style without high-motion overlays.
+  // initHackerEffects();
   initProgressIndicator();
   initModal();
   initFaqAccordion();
   initFormValidation();
-  initParticleTrail();
-  initSkillBars();
+  // initParticleTrail();
+  // Skill meters need verified values before animation.
   initNotificationToast();
   initMobileBottomBar();
   initRippleEffect();
-  initServiceBookings();
+  // Service buttons open an enquiry, not a browser-local booking.
 }
 
 async function loadData() {
@@ -71,7 +72,7 @@ async function loadData() {
   if (services) renderServices(services);
   if (featuresData) renderFeatures(featuresData);
   if (products) renderProducts(products);
-  if (testimonialsData) renderTestimonials(testimonialsData);
+  if (testimonialsData?.length) renderTestimonials(testimonialsData);
   if (settingsData) updateFooter(settingsData);
   if (galleryData) renderGallery(galleryData);
 }
@@ -96,7 +97,7 @@ function renderHero(data) {
   }
 
   const stats = document.querySelector('.hero-stats');
-  if (stats && data.stats) {
+  if (stats && data.stats?.length) {
     stats.innerHTML = data.stats.map((s, i) => `
       <div class="hero-stat">
         <span class="hero-stat-num" data-count="${s.count}">0</span>
@@ -109,8 +110,8 @@ function renderHero(data) {
 
   const priceValue = document.querySelector('.price-value');
   const priceOld = document.querySelector('.price-old');
-  if (priceValue && data.startingPrice) priceValue.textContent = `₹${Number(data.startingPrice).toLocaleString()}`;
-  if (priceOld && data.oldPrice) priceOld.textContent = `₹${Number(data.oldPrice).toLocaleString()}`;
+  if (priceValue) priceValue.textContent = data.startingPrice ? `₹${Number(data.startingPrice).toLocaleString()}` : 'On enquiry';
+  if (priceOld) priceOld.textContent = data.oldPrice ? `₹${Number(data.oldPrice).toLocaleString()}` : '';
 }
 
 function renderServices(services) {
@@ -132,7 +133,7 @@ function renderServices(services) {
           ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
         </ul>
           <button class="service-cta-btn" data-service-id="${s.id}" data-service-title="${s.title}">
-            <span>Book Now</span>
+            <span>Enquire Now</span>
             <i class="fas fa-arrow-right"></i>
           </button>
         </div>
@@ -140,6 +141,7 @@ function renderServices(services) {
     </div>
   `).join('');
   grid.innerHTML = cards;
+  grid.querySelectorAll('.service-cta-btn').forEach(b=>b.addEventListener('click',()=>{const m=document.getElementById('message');if(m)m.value='Enquiry about '+b.dataset.serviceTitle+'\n'+m.value;window.location.hash='contact';}));
 
   const hiddenGrid = document.querySelector('#hiddenServices .services-grid');
   if (hiddenGrid) {
@@ -158,12 +160,13 @@ function renderServices(services) {
             ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
           </ul>
            <button class="service-cta-btn" data-service-id="${s.id}" data-service-title="${s.title}">
-            <span>Book Now</span>
+            <span>Enquire Now</span>
             <i class="fas fa-arrow-right"></i>
           </button>
         </div>
       </div>
     `).join('');
+    hiddenGrid.querySelectorAll('.service-cta-btn').forEach(b=>b.addEventListener('click',()=>{const m=document.getElementById('message');if(m)m.value='Enquiry about '+b.dataset.serviceTitle+'\n'+m.value;window.location.hash='contact';}));
   }
 }
 
@@ -184,85 +187,20 @@ function renderFeatures(features) {
 function renderProducts(products) {
   const grid = document.querySelector('.products-grid');
   if (!grid) return;
-  grid.innerHTML = products.map((p, i) => {
-    const stars = Math.floor(p.rating);
-    const hasHalf = p.rating % 1 !== 0;
-    const starIcons = [];
-    for (let j = 0; j < 5; j++) {
-      if (j < stars) starIcons.push('<i class="fas fa-star"></i>');
-      else if (j === stars && hasHalf) starIcons.push('<i class="fas fa-star-half-alt"></i>');
-      else starIcons.push('<i class="far fa-star"></i>');
-    }
-
-    const badgeHtml = p.badge ? `
-      <span class="product-badge ${p.badge.type}">
-        <i class="fas fa-fire"></i> ${p.badge.text}
-      </span>` : '';
-
-    return `
-    <div class="product-card card-gradient-border" data-mode="buy" data-aos="fade-up" data-aos-delay="${i * 150}">
-      <div class="card-shine"></div>
-      <div class="card-glow"></div>
-      <div class="badge-container">
-        ${badgeHtml}
-      </div>
-      <button class="wishlist-btn" aria-label="Add to Wishlist">
-        <i class="far fa-heart"></i>
-      </button>
-      <div class="product-image-wrapper">
-        <div class="product-glow"></div>
-        <div class="product-image">
-          <img src="${p.image}" alt="${p.name}" loading="lazy">
-        </div>
-        <div class="product-reflection">
-          <img src="${p.image}" alt="" loading="lazy">
-        </div>
-      </div>
-      <div class="product-overlay">
-        <button class="quick-view-btn"><i class="fas fa-eye"></i><span>Quick View</span></button>
-      </div>
-      <div class="product-info">
-        <div class="product-header">
-          <span class="product-category">${p.category}</span>
-          <div class="product-rating">
-            <div class="stars">${starIcons.join('')}</div>
-            <span class="rating-count">(${(p.ratingCount || 0).toLocaleString()})</span>
-          </div>
-        </div>
-        <h3 class="product-name">${p.name}</h3>
-        <div class="buy-content">
-          <div class="product-price-row">
-            <div class="price-container">
-              <span class="price-current">₹${(p.buyPrice || 0).toLocaleString()}</span>
-              <span class="price-old">₹${(p.oldPrice || 0).toLocaleString()}</span>
-            </div>
-            <span class="savings-badge">Save ₹${((p.oldPrice || 0) - (p.buyPrice || 0)).toLocaleString()}</span>
-          </div>
-          <p class="product-description">${p.descriptionBuy || ''}</p>
-        </div>
-        <div class="rent-content" style="display: none;">
-          <div class="product-price-row">
-            <div class="price-container">
-              <span class="price-current">₹${(p.rentPrice || 0).toLocaleString()}</span>
-              <span class="rent-period">/month</span>
-            </div>
-            <span class="savings-badge" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Min. 6 Months</span>
-          </div>
-          <p class="product-description">${p.descriptionRent || ''}</p>
-        </div>
-        <div class="feature-chips">
-          ${(p.features || []).map(f => `<span class="feature-chip"><i class="fas fa-bolt"></i><span>${f}</span></span>`).join('')}
-        </div>
-        <button class="add-to-cart-btn">
-          <span class="btn-content">
-            <i class="fas fa-shopping-bag"></i>
-            <span>Add to Cart</span>
-          </span>
-          <div class="btn-glow"></div>
-        </button>
-      </div>
-    </div>`;
-  }).join('');
+  grid.replaceChildren();
+  for (const p of products) {
+    const card = document.createElement('article'); card.className = 'product-card card-gradient-border';
+    const imageWrapper = document.createElement('div'); imageWrapper.className='product-image-wrapper';
+    const image = document.createElement('img'); image.src=p.image; image.alt=p.name; image.loading='lazy'; image.className='product-catalog-image'; imageWrapper.append(image);
+    const info = document.createElement('div'); info.className='product-info';
+    const category = document.createElement('span'); category.className='product-category'; category.textContent=p.category || 'AC model';
+    const heading = document.createElement('h3'); heading.className='product-name'; heading.textContent=p.name;
+    const description = document.createElement('p'); description.className='product-description'; description.textContent=p.descriptionBuy || 'Details available on enquiry.';
+    const price = document.createElement('p'); price.className='product-price-row'; price.textContent=p.buyPrice ? '₹'+Number(p.buyPrice).toLocaleString() : 'Price on enquiry';
+    const button = document.createElement('a'); button.href='#contact'; button.className='add-to-cart-btn'; button.textContent='Ask about this AC ↗';
+    button.addEventListener('click',()=>{const message=document.querySelector('#message'); if(message) message.value='Enquiry about '+p.name+'\n'+message.value;});
+    info.append(category,heading,price,description,button); card.append(imageWrapper,info);grid.append(card);
+  }
 }
 
 function renderTestimonials(testimonials) {
@@ -296,7 +234,8 @@ function renderTestimonials(testimonials) {
 function updateWhatsApp(settings) {
   const wa = document.getElementById('whatsappChat');
   if (!wa || !settings) return;
-  const num = settings.whatsappNumber || '919876543210';
+  const num = settings.whatsappNumber;
+  if (!num) { wa.href='#contact'; wa.setAttribute('aria-label','Open contact form'); return; }
   const msg = settings.whatsappMessage || "Hi, I'm interested in your AC products";
   wa.href = 'https://wa.me/' + num.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(msg);
 }
@@ -533,12 +472,13 @@ function initFormSubmission() {
   const form = document.querySelector('.contact-form');
   if (!form) return;
 
-  // Populate service dropdown from localStorage
+  // Populate service dropdown from the published data (never browser-local admin edits)
   (function loadServiceDropdown() {
     const sel = document.getElementById('serviceType');
     if (!sel) return;
     let svc = [];
-    try { svc = JSON.parse(localStorage.getItem('transparentdb_services')) || []; } catch(e) {}
+    // Dropdown loads asynchronously after the published data is available.
+    fetch('transparentdb/services.json').then(r=>r.ok?r.json():[]).then(data=>{sel.replaceChildren(new Option('Select service...','')); data.forEach(item=>sel.add(new Option(item.title,item.title)));}).catch(()=>{});
     sel.innerHTML = '<option value="">Select service...</option>' + svc.map(s => '<option value="' + s.title + '">' + s.title + '</option>').join('');
   })();
 
@@ -583,45 +523,21 @@ function initFormSubmission() {
     if (interestType === 'rent') fullMessage = 'Want to Rent AC\n' + message;
     if (interestType === 'service') fullMessage = 'Service Needed: ' + (serviceType || 'General') + '\n' + message;
 
-    const formData = new URLSearchParams({
-      name,
-      phone,
-      email: email || '',
-      message: fullMessage
-    });
-
+    const formData = new URLSearchParams(new FormData(form));
+    formData.set('message', fullMessage);
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     submitBtn.disabled = true;
-
     try {
-      const res = await fetch(`${API_BASE}/contact/submit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData
-      });
-      if (!res.ok) throw new Error('Server returned ' + res.status);
-    } catch (e) {
-      console.warn('Server unavailable, saving locally');
-      if (typeof TransparentDB !== 'undefined') {
-        await TransparentDB.submitContact({name, email, phone, message: fullMessage});
-      }
+      const res = await fetch('/', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+      if (!res.ok) throw new Error('Form service returned '+res.status);
+      window.location.assign('/thank-you.html');
+    } catch (err) {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+      if (typeof window.showToast === 'function') window.showToast('Enquiry not confirmed. Please try again later.', 'error');
+      const status = form.querySelector('[role="status"]');
+      if (status) status.textContent='Enquiry not confirmed. Please try again later. Nothing was stored in this browser.';
     }
-
-    setTimeout(() => {
-      submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
-      submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-      if (typeof window.showToast === 'function') {
-        window.showToast('Message sent successfully!');
-      }
-      document.querySelectorAll('.contact-form .form-group').forEach(g => g.classList.remove('success'));
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.style.background = '';
-        submitBtn.disabled = false;
-        form.reset();
-        document.getElementById('serviceGroup').style.display = 'none';
-      }, 2000);
-    }, 1500);
   });
 }
 
@@ -971,25 +887,17 @@ function initServiceBookings() {
 function renderGallery(items) {
   const grid = document.getElementById('galleryGrid');
   if (!grid) return;
-  if (!items || items.length === 0) {
-    const section = document.querySelector('.gallery');
-    if (section) section.style.display = 'none';
-    return;
+  grid.replaceChildren();
+  for (const item of items.slice(0, 3)) {
+    const tile = document.createElement('div'); tile.className='gallery-item';
+    const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy';
+    const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption;
+    tile.append(image,caption);
+    tile.addEventListener('click',()=>window.openGalleryLightbox(item.image,item.caption));
+    grid.append(tile);
   }
-  const section = document.querySelector('.gallery');
-  if (section) section.style.display = '';
-  const showAll = window.location.pathname.includes('gallery.html');
-  const visible = showAll ? items : items.slice(0, 3);
-  grid.innerHTML = visible.map(item => `
-    <div class="gallery-item" onclick="openGalleryLightbox('${item.image}','${item.caption.replace(/'/g, "\\'")}')">
-      <img src="${item.image}" alt="${item.caption}" loading="lazy">
-      <div class="gallery-caption">${item.caption}</div>
-    </div>
-  `).join('');
-  const viewAll = document.getElementById('galleryViewAll');
-  if (viewAll) {
-    viewAll.style.display = (!showAll && items.length > 3) ? 'block' : 'none';
-  }
+  const viewAll=document.getElementById('galleryViewAll');
+  if (viewAll) viewAll.style.display=items.length>3?'block':'none';
 }
 
 window.openGalleryLightbox = function(src, caption) {

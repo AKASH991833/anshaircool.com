@@ -37,7 +37,7 @@ html {
 
 body {
     font-family: var(--font-primary);
-    background: url('images/Background.png') no-repeat center center fixed;
+    background: url('images/Background.webp') no-repeat center center fixed;
     background-size: cover;
     color: var(--text-primary);
     line-height: 1.7;
@@ -6891,3 +6891,10 @@ html.mobile-menu-open {
   img { max-width: 100% !important; page-break-inside: avoid; }
   a[href]:after { content: none !important; }
 }
+
+/* Small in-place usability adjustments, preserving the original glass design. */
+.customer-placeholder {display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:1.4rem;color:#eee}
+.product-catalog-image {width:100%;height:100%;object-fit:cover}
+.form-status {min-height:1.4rem;color:#ffd6d6;margin-top:0.75rem}
+.visually-hidden {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (prefers-reduced-motion: reduce) {*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}

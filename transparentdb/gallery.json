@@ -1,32 +1,32 @@
 [
   {
     "id": 1,
-    "image": "images/ac-installation.jpg",
-    "caption": "Split AC Installation at Andheri Residence"
+    "image": "images/ac-installation.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   },
   {
     "id": 2,
-    "image": "images/ac-cleaning.jpg",
-    "caption": "Deep Cleaning Service for Office AC"
+    "image": "images/ac-cleaning.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   },
   {
     "id": 3,
-    "image": "images/gas-refill.jpg",
-    "caption": "Gas Refill & Leak Testing"
+    "image": "images/gas-refill.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   },
   {
     "id": 4,
-    "image": "images/ac-repair.jpg",
-    "caption": "PCB Repair for Inverter AC"
+    "image": "images/ac-repair.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   },
   {
     "id": 5,
-    "image": "images/amc-service.jpg",
-    "caption": "Yearly AMC Service Visit"
+    "image": "images/amc-service.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   },
   {
     "id": 6,
-    "image": "images/window-ac.jpg",
-    "caption": "Window AC Installation in Bedroom"
+    "image": "images/window-ac.webp",
+    "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
   }
 ]

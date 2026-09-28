@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - Ansh Air Cool</title>
-    <meta name="description" content="View our complete project gallery - AC installation, repair, and service work by Ansh Air Cool.">
+    <meta name="description" content="Illustrative AC service images. Actual project photos will be added after owner verification.">
     <meta property="og:title" content="Gallery - Ansh Air Cool">
-    <meta property="og:description" content="View our complete project gallery - AC installation, repair, and service work by Ansh Air Cool.">
+    <meta property="og:description" content="Illustrative AC service images. Actual project photos will be added after owner verification.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://anshaircool.com/gallery.html">
-    <meta property="og:image" content="https://anshaircool.com/images/Background.png">
+    <meta property="og:url" content="https://anshaircool.netlify.app/gallery.html">
+    <meta property="og:image" content="https://anshaircool.netlify.app/images/Background.webp">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { background: url('images/Background.png') no-repeat center center fixed; background-size: cover; font-family: 'Inter', sans-serif; color: white; }
+        body { background: url('images/Background.webp') no-repeat center center fixed; background-size: cover; font-family: 'Inter', sans-serif; color: white; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(6,182,212,0.4); border-radius: 10px; }
@@ -80,7 +80,7 @@
         <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
 
-    <div class="loading-screen" id="loadingScreen">
+    <div class="loading-screen hidden" id="loadingScreen">
         <div class="loading-logo">ANSH AIR COOL</div>
         <div class="loading-sub">Cooling Technology, Redefined</div>
         <div class="loading-bar"><div class="loading-bar-fill"></div></div>
@@ -98,12 +98,11 @@
         <a href="index.html#contact"><i class="fas fa-phone-alt"></i><span>Contact</span></a>
     </nav>
 
-    <a href="https://wa.me/919876543210?text=Hi%2C%20I'm%20interested%20in%20your%20AC%20products"
-       target="_blank"
+    <a href="index.html#contact"
        class="whatsapp-chat"
        id="whatsappChat"
-       aria-label="Chat on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
+       aria-label="Open contact form">
+        <i class="fas fa-envelope"></i>
     </a>
 
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
@@ -122,12 +121,7 @@
                 grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>No photos in gallery yet.</p></div>';
                 return;
             }
-            grid.innerHTML = galleryData.map(item => `
-                <div class="gallery-item" onclick="openLightbox('${item.image.replace(/'/g, "\\'")}','${item.caption.replace(/'/g, "\\'")}')">
-                    <img src="${item.image}" alt="${item.caption}" loading="lazy">
-                    <div class="gallery-caption">${item.caption}</div>
-                </div>
-            `).join('');
+            grid.replaceChildren(); galleryData.forEach(item => { const tile=document.createElement('div'); tile.className='gallery-item'; const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy'; const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption; tile.append(image,caption); tile.addEventListener('click',()=>openLightbox(item.image,item.caption)); grid.append(tile); });
         });
 
         function openLightbox(src, caption) {

@@ -2,37 +2,37 @@
   {
     "id": 1,
     "icon": "fa-gem",
-    "title": "Superior Quality",
-    "description": "Built with premium components and rigorous testing for lasting durability and peak performance."
+    "title": "Product Options",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   },
   {
     "id": 2,
     "icon": "fa-wifi",
-    "title": "Smart Connectivity",
-    "description": "WiFi-enabled control lets you manage your AC from anywhere using your smartphone."
+    "title": "Model Details",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   },
   {
     "id": 3,
     "icon": "fa-shield-alt",
-    "title": "10 Year Warranty",
-    "description": "Comprehensive warranty coverage for complete peace of mind on your investment."
+    "title": "Warranty Terms",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   },
   {
     "id": 4,
     "icon": "fa-award",
-    "title": "100% Satisfaction",
-    "description": "Not happy? We offer full replacement or refund. Your satisfaction is guaranteed."
+    "title": "Service Support",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   },
   {
     "id": 5,
     "icon": "fa-bolt",
-    "title": "Energy Efficient",
-    "description": "5-star rated inverter technology that cuts your electricity bills by up to 60%."
+    "title": "Energy Ratings",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   },
   {
     "id": 6,
     "icon": "fa-headset",
-    "title": "24/7 Support",
-    "description": "Round-the-clock customer support with instant response and quick resolution."
+    "title": "Contact & Availability",
+    "description": "Ask us to confirm available options and terms for your chosen AC or service."
   }
 ]

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>if(/#(recovery_token|invite_token|confirmation_token|email_change_token)=/.test(location.hash))location.replace('/admin/'+location.hash)</script>
+  <script src="/auth-redirect.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ANSH AIR COOL | Premium Air Conditioning</title>
@@ -170,7 +170,7 @@
       </div>
 
       <div class="show-more-container">
-        <button class="show-more-btn" id="showMoreBtn" onclick="toggleServices()">
+        <button class="show-more-btn" id="showMoreBtn">
           <span class="btn-text">Show More Services</span>
           <i class="fas fa-chevron-down"></i>
         </button>
@@ -386,7 +386,7 @@
 
   <!-- Gallery Lightbox -->
   <div class="gallery-lightbox" id="galleryLightbox">
-    <button class="lightbox-close" onclick="closeGalleryLightbox()">&times;</button>
+    <button class="lightbox-close">&times;</button>
     <img id="lightboxImage" src="" alt="">
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
@@ -620,12 +620,5 @@
   <script src="transparentdb/db.js"></script>
   <script src="script.js"></script>
 
-  <script>
-    document.addEventListener('appReady', () => {
-      setTimeout(() => {
-        document.getElementById('loadingScreen').classList.add('hidden');
-      }, 500);
-    });
-  </script>
 </body>
 </html>

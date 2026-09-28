@@ -7022,3 +7022,31 @@ body::before,.hacker-scanner,.hacker-overlay,.hero-bg-image,.hero-particles,
 .section-title,.section-title span:not(.gradient-text) {color:#14283a}
 .btn-primary {background:#007f99;color:#fff;border-color:#007f99}
 .btn-primary:hover {background:#006e86;color:#fff}
+
+/* Light theme contrast pass: old dark-theme literals must not disappear on white. */
+.hero-title .title-line:not(.gradient-text),.hero-line.hero-line-1,.hero-line.hero-line-3 {
+  color:#14283a!important;-webkit-text-fill-color:#14283a!important;
+}
+.hero-title .gradient-text,.hero-line .gradient-text {color:#0086a0!important;-webkit-text-fill-color:transparent!important}
+.btn-hero-outline,.btn-hero-outline span,.hero-scroll span,.hacker-tag,.hacker-command,.hacker-command .prompt,
+.about-image-overlay span,.about-image-overlay .exp-text,.about .skill-bar-title,.about .stat-number.hacker-stat,
+.about .stat-suffix.hacker-tag-suffix,.testimonial-text,.testimonial-card .testimonial-text,
+.contact .field-hint,.footer .footer-title,.footer-links-group .footer-title,.form-status {
+  color:#29475a!important;-webkit-text-fill-color:#29475a!important;
+}
+.btn-hero-outline {background:#fff;border-color:#bad8e4}
+.footer .footer-title,.about .skill-bar-title {color:#14283a!important;-webkit-text-fill-color:#14283a!important}
+.form-status {color:#a33636!important}
+/* Buttons remain deliberately white-on-teal, and captions/lightboxes white-on-black. */
+.btn-hero-primary,.btn-hero-primary span,.btn-primary,.btn-primary span,.service-cta-btn,.service-cta-btn span,
+.add-to-cart-btn,.mobile-bottom-bar a.active {text-shadow:none}
+@media(max-width:768px){
+ .nav-links,.nav-links.active {background:rgba(255,255,255,.98)!important}
+ .nav-links .nav-link {color:#14283a!important;text-shadow:none}
+ .nav-links .nav-link:hover,.nav-links .nav-link.active {color:#007f99!important;background:#e8f6fa}
+}
+/* The two captions sit on light photo badges, unlike gallery captions. */
+.about-float-badge span,.about-float-badge .exp-text {color:#14283a!important;-webkit-text-fill-color:#14283a!important}
+.experience-badge,.about-float-badge {background:rgba(255,255,255,.93);border-color:rgba(0,127,153,.3);box-shadow:0 8px 25px rgba(24,70,90,.18)}
+.experience-badge .exp-text {color:#29475a!important;-webkit-text-fill-color:#29475a!important}
+.product-tab.active,.purchase-toggle .active,.toggle-btn.active {color:#fff!important}

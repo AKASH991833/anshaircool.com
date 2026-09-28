@@ -6898,3 +6898,49 @@ html.mobile-menu-open {
 .form-status {min-height:1.4rem;color:#ffd6d6;margin-top:0.75rem}
 .visually-hidden {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media (prefers-reduced-motion: reduce) {*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Readable smoked glass over the red artwork. Keep the image and glass edges visible. */
+.service-card, .feature-card, .product-card, .testimonial-card, .faq-item,
+.contact-card, .hours-card, .contact-form, .about-service-item {
+  background: rgba(12, 16, 24, 0.88);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255,255,255,0.18);
+}
+.service-card:hover, .feature-card:hover, .product-card:hover,
+.testimonial-card:hover, .faq-item:hover, .faq-item.active,
+.contact-card:hover, .about-service-item:hover {
+  background: rgba(16, 24, 34, 0.94);
+}
+.product-card .product-info, .service-card .service-info {background: rgba(12,16,24,0.88)}
+@media (max-width: 640px) {
+  .service-card, .feature-card, .product-card, .testimonial-card, .faq-item,
+  .contact-card, .hours-card, .contact-form, .about-service-item {
+    background: rgba(12,16,24,0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .product-card .product-info, .service-card .service-info {background: rgba(12,16,24,0.94)}
+  .contact-card-content p, .service-description, .product-description,
+  .feature-card p, .about-service-item p {color:#e4e7eb}
+  .contact-card, .contact-form, .service-card, .product-card, .feature-card {max-width:100%;min-width:0}
+  .contact-grid, .services-grid, .products-grid, .features-grid {min-width:0}
+  .form-row input, .form-row select, .form-row textarea {min-width:0;max-width:100%}
+  .whatsapp-chat {bottom: 5.5rem;right: 1rem;width:48px;height:48px;font-size:1.25rem}
+  .back-to-top {bottom: 5.5rem;left: 1rem;width:48px;height:48px}
+}
+/* Mobile readability: contact details get real width; fixed shortcuts no longer cover cards. */
+@media (max-width: 768px) {
+  .contact-info {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+  .contact-card {min-width:0;min-height:128px;align-items:flex-start;gap:0.55rem;overflow-wrap:anywhere}
+  .contact-card-content {min-width:0}
+  .contact-card-content p, .contact-card-content span {line-height:1.4}
+  .contact-hours {grid-column:1/-1;margin-top:0}
+  .whatsapp-chat, .back-to-top {display:none!important}
+}
+@media (max-width: 390px) {
+  .contact-info {grid-template-columns:1fr}
+  .contact-card {min-height:0;align-items:center}
+}
+.customer-rating {display:none}
+.about-customer-stats .customer-stat {background:rgba(12,16,24,0.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}

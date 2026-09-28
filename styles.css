@@ -6899,35 +6899,34 @@ html.mobile-menu-open {
 .visually-hidden {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media (prefers-reduced-motion: reduce) {*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* Readable smoked glass over the red artwork. Keep the image and glass edges visible. */
+/* Balanced red-tinted glass: the red artwork shows faintly, text remains legible. */
 .service-card, .feature-card, .product-card, .testimonial-card, .faq-item,
 .contact-card, .hours-card, .contact-form, .about-service-item {
-  background: rgba(12, 16, 24, 0.88);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border-color: rgba(255,255,255,0.18);
+  background: rgba(28, 20, 28, 0.68);
+  -webkit-backdrop-filter: blur(18px) saturate(115%);
+  backdrop-filter: blur(18px) saturate(115%);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.18);
 }
 .service-card:hover, .feature-card:hover, .product-card:hover,
 .testimonial-card:hover, .faq-item:hover, .faq-item.active,
 .contact-card:hover, .about-service-item:hover {
-  background: rgba(16, 24, 34, 0.94);
+  background: rgba(32, 23, 32, 0.79);
 }
-.product-card .product-info, .service-card .service-info {background: rgba(12,16,24,0.88)}
+.product-card .product-info, .service-card .service-info {background: rgba(24,20,29,0.74)}
 @media (max-width: 640px) {
   .service-card, .feature-card, .product-card, .testimonial-card, .faq-item,
   .contact-card, .hours-card, .contact-form, .about-service-item {
-    background: rgba(12,16,24,0.94);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    background: rgba(28,20,28,0.76);
+    -webkit-backdrop-filter: blur(16px) saturate(115%);
+    backdrop-filter: blur(16px) saturate(115%);
   }
-  .product-card .product-info, .service-card .service-info {background: rgba(12,16,24,0.94)}
+  .product-card .product-info, .service-card .service-info {background: rgba(24,20,29,0.8)}
   .contact-card-content p, .service-description, .product-description,
-  .feature-card p, .about-service-item p {color:#e4e7eb}
+  .feature-card p, .about-service-item p {color:#f0f0f3}
   .contact-card, .contact-form, .service-card, .product-card, .feature-card {max-width:100%;min-width:0}
   .contact-grid, .services-grid, .products-grid, .features-grid {min-width:0}
   .form-row input, .form-row select, .form-row textarea {min-width:0;max-width:100%}
-  .whatsapp-chat {bottom: 5.5rem;right: 1rem;width:48px;height:48px;font-size:1.25rem}
-  .back-to-top {bottom: 5.5rem;left: 1rem;width:48px;height:48px}
 }
 /* Mobile readability: contact details get real width; fixed shortcuts no longer cover cards. */
 @media (max-width: 768px) {
@@ -6943,4 +6942,4 @@ html.mobile-menu-open {
   .contact-card {min-height:0;align-items:center}
 }
 .customer-rating {display:none}
-.about-customer-stats .customer-stat {background:rgba(12,16,24,0.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.about-customer-stats .customer-stat {background:rgba(28,20,28,0.76);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}

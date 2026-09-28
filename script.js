@@ -92,7 +92,7 @@ function renderHero(data) {
   const features = document.querySelector('.hero-features');
   if (features && data.quickFeatures) {
     features.innerHTML = data.quickFeatures.map(f =>
-      `<span><i class="fas ${f.icon}"></i> ${f.text}</span>`
+      `<span><i class="fas ${escapeMarkup(f.icon)}"></i> ${escapeMarkup(f.text)}</span>`
     ).join('');
   }
 
@@ -100,9 +100,9 @@ function renderHero(data) {
   if (stats && data.stats?.length) {
     stats.innerHTML = data.stats.map((s, i) => `
       <div class="hero-stat">
-        <span class="hero-stat-num" data-count="${s.count}">0</span>
-        <span class="hero-stat-plus">${s.suffix}</span>
-        <span class="hero-stat-label">${s.label}</span>
+        <span class="hero-stat-num" data-count="${escapeMarkup(s.count)}">0</span>
+        <span class="hero-stat-plus">${escapeMarkup(s.suffix)}</span>
+        <span class="hero-stat-label">${escapeMarkup(s.label)}</span>
       </div>
       ${i < data.stats.length - 1 ? '<div class="hero-stat-divider"></div>' : ''}
     `).join('');
@@ -114,6 +114,7 @@ function renderHero(data) {
   if (priceOld) priceOld.textContent = data.oldPrice ? `₹${Number(data.oldPrice).toLocaleString()}` : '';
 }
 
+function safeImagePath(value) { return typeof value === 'string' && /^images\/[a-z0-9-]+\.(?:webp|png|jpe?g)$/.test(value) ? value : ''; }
 function escapeMarkup(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function renderServices(services) {
   const grid = document.querySelector('.services-grid');
@@ -124,14 +125,14 @@ function renderServices(services) {
       <div class="service-image-wrapper">
         <div class="service-glow"></div>
         <div class="service-image">
-          <img src="${escapeMarkup(s.image)}" alt="${escapeMarkup(s.title)}" loading="lazy">
+          <img src="${escapeMarkup(safeImagePath(s.image))}" alt="${escapeMarkup(s.title)}" loading="lazy">
         </div>
       </div>
       <div class="service-info">
         <h3 class="service-title">${escapeMarkup(s.title)}</h3>
         <p class="service-description">${escapeMarkup(s.description)}</p>
         <ul class="service-features">
-          ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
+          ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${escapeMarkup(f)}</li>`).join('')}
         </ul>
           <button class="service-cta-btn" data-service-id="${escapeMarkup(s.id)}" data-service-title="${escapeMarkup(s.title)}">
             <span>Enquire Now</span>
@@ -151,14 +152,14 @@ function renderServices(services) {
         <div class="service-image-wrapper">
           <div class="service-glow"></div>
           <div class="service-image">
-            <img src="${escapeMarkup(s.image)}" alt="${escapeMarkup(s.title)}" loading="lazy">
+            <img src="${escapeMarkup(safeImagePath(s.image))}" alt="${escapeMarkup(s.title)}" loading="lazy">
           </div>
         </div>
         <div class="service-info">
           <h3 class="service-title">${escapeMarkup(s.title)}</h3>
           <p class="service-description">${escapeMarkup(s.description)}</p>
           <ul class="service-features">
-            ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}
+            ${(s.features || []).map(f => `<li><i class="fas fa-check"></i> ${escapeMarkup(f)}</li>`).join('')}
           </ul>
            <button class="service-cta-btn" data-service-id="${escapeMarkup(s.id)}" data-service-title="${escapeMarkup(s.title)}">
             <span>Enquire Now</span>
@@ -177,10 +178,10 @@ function renderFeatures(features) {
   grid.innerHTML = features.map((f, i) => `
     <div class="feature-card" data-aos="fade-up" data-aos-delay="${(i + 1) * 100}">
       <div class="feature-icon">
-        <i class="fas ${f.icon}"></i>
+        <i class="fas ${escapeMarkup(f.icon)}"></i>
       </div>
-      <h3 class="feature-title">${f.title}</h3>
-      <p class="feature-description">${f.description}</p>
+      <h3 class="feature-title">${escapeMarkup(f.title)}</h3>
+      <p class="feature-description">${escapeMarkup(f.description)}</p>
     </div>
   `).join('');
 }
@@ -192,7 +193,7 @@ function renderProducts(products) {
   for (const p of products) {
     const card = document.createElement('article'); card.className = 'product-card card-gradient-border';
     const imageWrapper = document.createElement('div'); imageWrapper.className='product-image-wrapper';
-    const image = document.createElement('img'); image.src=p.image; image.alt=p.name; image.loading='lazy'; image.className='product-catalog-image'; imageWrapper.append(image);
+    const image = document.createElement('img'); image.src=safeImagePath(p.image); image.alt=p.name; image.loading='lazy'; image.className='product-catalog-image'; imageWrapper.append(image);
     const info = document.createElement('div'); info.className='product-info';
     const category = document.createElement('span'); category.className='product-category'; category.textContent=p.category || 'AC model';
     const heading = document.createElement('h3'); heading.className='product-name'; heading.textContent=p.name;
@@ -219,12 +220,12 @@ function renderTestimonials(testimonials) {
     return `
     <div class="testimonial-card" data-aos="fade-up">
       <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
-      <p class="testimonial-text">${t.text}</p>
+      <p class="testimonial-text">${escapeMarkup(t.text)}</p>
       <div class="testimonial-author">
-        <div class="author-avatar"><img src="${t.avatar}" alt="${t.name}"></div>
+        <div class="author-avatar"><img src="${escapeMarkup(safeImagePath(t.avatar))}" alt="${escapeMarkup(t.name)}"></div>
         <div class="author-info">
-          <h4>${t.name}</h4>
-          <p>${t.location}</p>
+          <h4>${escapeMarkup(t.name)}</h4>
+          <p>${escapeMarkup(t.location)}</p>
           <div class="author-rating">${starIcons.join('')}</div>
         </div>
       </div>
@@ -480,7 +481,7 @@ function initFormSubmission() {
     let svc = [];
     // Dropdown loads asynchronously after the published data is available.
     fetch('transparentdb/services.json').then(r=>r.ok?r.json():[]).then(data=>{sel.replaceChildren(new Option('Select service...','')); data.forEach(item=>sel.add(new Option(item.title,item.title)));}).catch(()=>{});
-    sel.innerHTML = '<option value="">Select service...</option>' + svc.map(s => '<option value="' + s.title + '">' + s.title + '</option>').join('');
+    sel.replaceChildren(new Option('Select service...',''));
   })();
 
   // Toggle service dropdown based on interest
@@ -894,10 +895,10 @@ function renderGallery(items) {
     grid.replaceChildren();
     for (const item of photos) {
       const tile = document.createElement('div'); tile.className='gallery-item';
-      const image=document.createElement('img'); image.src=item.image; image.alt=item.caption; image.loading='lazy';
+      const image=document.createElement('img'); image.src=safeImagePath(item.image); image.alt=item.caption; image.loading='lazy';
       const caption=document.createElement('div'); caption.className='gallery-caption'; caption.textContent=item.caption;
       tile.append(image,caption);
-      tile.addEventListener('click',()=>window.openGalleryLightbox(item.image,item.caption));
+      tile.addEventListener('click',()=>window.openGalleryLightbox(safeImagePath(item.image),item.caption));
       grid.append(tile);
     }
   }
@@ -910,7 +911,7 @@ function renderGallery(items) {
 window.openGalleryLightbox = function(src, caption) {
   const lb = document.getElementById('galleryLightbox');
   if (!lb) return;
-  document.getElementById('lightboxImage').src = src;
+  document.getElementById('lightboxImage').src = safeImagePath(src);
   document.getElementById('lightboxCaption').textContent = caption || '';
   lb.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -945,3 +946,8 @@ if (location.hostname.endsWith('.netlify.app')) {
     fetch('/.netlify/functions/visit', {method:'POST',credentials:'same-origin',keepalive:true}).catch(()=>{});
   }, {once:true});
 }
+
+// Keep the recovery redirect in a standalone file; the public CSP disallows inline scripts.
+document.addEventListener('appReady', () => { setTimeout(() => document.getElementById('loadingScreen')?.classList.add('hidden'), 500); });
+document.getElementById('showMoreBtn')?.addEventListener('click', toggleServices);
+document.querySelector('#galleryLightbox .lightbox-close')?.addEventListener('click', window.closeGalleryLightbox);

@@ -13,7 +13,7 @@ from functools import wraps
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'ansh_aircool_secret_2024')
+app.secret_key = os.environ['FLASK_SECRET_KEY']
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -145,8 +145,11 @@ def init_db():
 
         c.execute('SELECT COUNT(*) as cnt FROM admin_users')
         if c.fetchone()['cnt'] == 0:
+            initial_password = os.getenv('INITIAL_ADMIN_PASSWORD')
+            if not initial_password or len(initial_password) < 12:
+                raise RuntimeError('Set INITIAL_ADMIN_PASSWORD to a unique password of at least 12 characters before first launch')
             c.execute('INSERT INTO admin_users (username, password, email) VALUES (%s, %s, %s)',
-                ('admin', generate_password_hash('admin123'), 'admin@anshaircool.com'))
+                ('admin', generate_password_hash(initial_password), os.getenv('ADMIN_EMAIL', '')))
 
         c.execute('SELECT COUNT(*) as cnt FROM hero_content')
         if c.fetchone()['cnt'] == 0:
@@ -877,6 +880,6 @@ if __name__ == '__main__':
     print("="*60)
     print("  Website: http://localhost:5000")
     print("  Admin:   http://localhost:5000/admin")
-    print("  Login:   admin / admin123")
+    print("  Login:   admin / [configured in INITIAL_ADMIN_PASSWORD]")
     print("="*60 + "\n")
     app.run(debug=True, port=5000, host='127.0.0.1')

@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: AKASH991833/anshaircool.com
   branch: main
 local_backend: false
 publish: true

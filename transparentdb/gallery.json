@@ -28,5 +28,11 @@
     "id": 6,
     "image": "images/window-ac.webp",
     "caption": "Illustrative AC service image - actual project photos to be added after owner verification"
+  },
+  {
+    "id": 7,
+    "image": "images/gallery-e83158a5-c4c4-4285-ba2d-0ccc1bb1ec62.png",
+    "caption": "New work photo",
+    "category": "work"
   }
 ]

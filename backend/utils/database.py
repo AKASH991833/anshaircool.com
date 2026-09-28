@@ -130,7 +130,10 @@ class DatabaseManager:
         cursor.execute('SELECT COUNT(*) as count FROM admin_users')
         result = cursor.fetchone()
         if result['count'] == 0:
-            hashed_password = SecurityUtils.hash_password('admin123')
+            initial_password = os.getenv('INITIAL_ADMIN_PASSWORD')
+            if not initial_password or len(initial_password) < 12:
+                raise RuntimeError('Set INITIAL_ADMIN_PASSWORD to a unique password of at least 12 characters before first launch')
+            hashed_password = SecurityUtils.hash_password(initial_password)
             cursor.execute(
                 'INSERT INTO admin_users (username, password, email) VALUES (%s, %s, %s)',
                 ('admin', hashed_password, 'admin@anshaircool.com')

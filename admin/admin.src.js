@@ -1,4 +1,4 @@
-import { login,logout,getUser,handleAuthCallback,acceptInvite } from '@netlify/identity'
+import { login,logout,getUser,handleAuthCallback,acceptInvite,updateUser } from '@netlify/identity'
 const $=s=>document.querySelector(s)
 const owner='akashvishwakarma1262@gmail.com'
 let heroSha,gallerySha,gallery=[]
@@ -15,7 +15,7 @@ async function initialize(){
     if(location.hash.startsWith('#invite_token=')) history.replaceState(null,'','/admin/'+location.hash)
     const callback=await handleAuthCallback()
     if(callback?.type==='invite'){inviteToken=callback.token;$('#accept').hidden=false;status('Create your new password to activate your invite.',true)}
-    else if(callback?.type==='recovery')status('Use your Netlify recovery link to set a new password.',true)
+    else if(callback?.type==='recovery'){$('#login').hidden=true;$('#reset').hidden=false;status('Recovery link accepted. Set a new password below (at least 12 characters).',true)}
     else if(callback?.user) status('Signed in.',true)
   } catch(e){status(e.message,true)}
   const user=await getUser()
@@ -26,6 +26,7 @@ async function initialize(){
 }
 $('#login').addEventListener('submit',async e=>{e.preventDefault();status('Signing in...',true);try{await login($('#email').value,$('#password').value);await initialize()}catch(err){status(err.message,true)}})
 $('#logout').addEventListener('click',async()=>{try{await logout()}finally{location.reload()}})
+$('#setPassword').addEventListener('click',async()=>{try{const pw=$('#resetPassword').value;if(pw.length<12)throw Error('Use at least 12 characters.');status('Saving new password...',true);await updateUser({password:pw});$('#reset').hidden=true;$('#resetPassword').value='';status('New password saved. You are signed in.',true)}catch(err){status(err.message,true)}})
 $('#acceptInvite').addEventListener('click',async()=>{try{if($('#newPassword').value.length<12)throw Error('Use at least 12 characters.');await acceptInvite(inviteToken,$('#newPassword').value);inviteToken=undefined;await initialize()}catch(err){status(err.message,true)}})
 $('#heroForm').addEventListener('submit',async e=>{e.preventDefault();const btn=e.submitter;btn.disabled=true;status('Saving...');try{const data=Object.fromEntries(new FormData(e.currentTarget));const x=await api('admin-content?table=hero',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({data,sha:heroSha})});heroSha=x.sha;status('Saved to GitHub. Check the public site after Netlify finishes deploying.')}catch(err){status(err.message)}finally{btn.disabled=false}})
 function renderGallery(){const area=$('#galleryItems');area.replaceChildren();gallery.forEach((x,i)=>{const row=document.createElement('div');row.className='gallery-row';const img=document.createElement('img');img.src='/'+x.image;img.alt='Gallery preview';const input=document.createElement('input');input.value=x.caption;input.maxLength=240;input.placeholder='Photo caption';input.addEventListener('input',()=>gallery[i].caption=input.value);const remove=document.createElement('button');remove.type='button';remove.textContent='Remove';remove.addEventListener('click',()=>{gallery.splice(i,1);renderGallery()});const category=document.createElement('select');category.setAttribute('aria-label','Photo destination');for(const [value,label] of [['work','Work gallery'],['rent','AC rental']]){const option=new Option(label,value);category.add(option)}category.value=x.category||'work';category.addEventListener('change',()=>gallery[i].category=category.value);row.append(img,input,category,remove);area.append(row)})}

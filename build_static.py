@@ -6,7 +6,7 @@ root = Path(__file__).resolve().parent
 out = root / 'public'
 if out.exists(): shutil.rmtree(out)
 out.mkdir()
-for name in ('index.html', 'gallery.html', 'thank-you.html', 'script.js', 'styles.css'):
+for name in ('index.html', 'gallery.html', 'thank-you.html', 'script.js', 'styles.css', 'site.css', 'site.js'):
     shutil.copy2(root/name, out/name)
 shutil.copytree(root/'admin', out/'admin', ignore=shutil.ignore_patterns('*.src.js'))
 subprocess.run(['./node_modules/.bin/esbuild','admin/admin.src.js','--bundle','--minify','--platform=browser','--format=esm','--outfile=public/admin/admin.js'], cwd=root,check=True,stdout=subprocess.DEVNULL)

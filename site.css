@@ -50,7 +50,7 @@ section{padding:84px 0}
 .steps{counter-reset:s}.step{padding:26px;position:relative;overflow:visible;margin-top:10px}.step:before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:22px;width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-weight:800;display:grid;place-items:center;font-family:Sora}
 .step h3{margin:10px 0 6px;font-size:1.1rem}.step p{color:var(--muted);font-size:.93rem}
 .brands{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}.brands span{padding:10px 20px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-weight:700;color:var(--muted)}
-.prod img{aspect-ratio:1/1;object-fit:cover}.prod .b{padding:18px}.prod small{color:var(--brand);font-weight:700}.prod h3{font-size:1.05rem;margin:4px 0 10px}
+.prod img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}.prod .b{padding:18px}.prod small{color:var(--brand);font-weight:700}.prod h3{font-size:1.05rem;margin:4px 0 10px}
 .prod .btn{padding:10px 16px;font-size:.88rem;width:100%;justify-content:center}
 .gal{grid-template-columns:repeat(4,1fr)}.gal img{border-radius:16px;aspect-ratio:1/1;object-fit:cover;width:100%;transition:.3s}.gal img:hover{transform:scale(1.03)}
 .faq{max-width:780px;margin:auto}details{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:12px}

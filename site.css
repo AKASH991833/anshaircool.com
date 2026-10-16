@@ -76,3 +76,5 @@ footer{background:#040d1b;color:#8ea6c6;padding:36px 0;font-size:.9rem}footer .w
 @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr)}.gal{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:860px){.links,.nav .btn{display:none}.hero .wrap,.contact .wrap{grid-template-columns:1fr}.hero .wrap{padding-top:40px;padding-bottom:56px}.g3{grid-template-columns:1fr}section{padding:56px 0}.f1{left:8px}.f2{right:8px}.top .hide{display:none}}
 @media(max-width:480px){.g4{grid-template-columns:1fr 1fr;gap:14px}.cta{flex-direction:column}.cta .btn{width:100%;justify-content:center;white-space:nowrap}.step h3{font-size:1rem}.why .card{padding:18px}.cta .btn{flex:1;justify-content:center}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two .btn{width:100%;justify-content:center}form .small{font-size:.88rem;color:var(--muted,#64748b);margin:-4px 0 12px}
+@media(max-width:520px){.two{grid-template-columns:1fr}}

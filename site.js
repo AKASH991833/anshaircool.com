@@ -1,7 +1,7 @@
 (function(){
 var r=document.documentElement,b=document.getElementById('theme');
-function ic(){b.firstElementChild.className='fa-solid '+(r.dataset.theme==='dark'?'fa-sun':'fa-moon')}ic();
-b.onclick=function(){r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}ic()};
+function ic(){b.firstElementChild.className='fa-solid '+(r.dataset.theme==='light'?'fa-moon':'fa-sun')}ic();
+b.onclick=function(){r.dataset.theme=r.dataset.theme==='light'?'dark':'light';try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}ic()};
 document.getElementById('y').textContent=new Date().getFullYear();
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.rv').forEach(function(e){if(/shot/.test(location.search))e.classList.add('in');else io.observe(e)});

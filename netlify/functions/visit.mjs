@@ -6,7 +6,7 @@ export default async (req) => {
   const origin = req.headers.get('origin')
   if (origin !== new URL(req.url).origin) return new Response(null,{status:403})
   const cookie = req.headers.get('cookie') || ''
-  const today = new Date().toISOString().slice(0,10)
+  const today = new Date(Date.now() + 19800000).toISOString().slice(0,10)
   const existing = /(?:^|;\s*)ansh_visit=([0-9]{4}-[0-9]{2}-[0-9]{2})/.exec(cookie)?.[1]
   if (existing === today) return new Response(null,{status:204,headers:{'Cache-Control':'no-store'}})
   const store = getStore('ansh-visitor-events')

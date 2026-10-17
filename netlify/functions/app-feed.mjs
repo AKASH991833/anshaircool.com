@@ -2,8 +2,7 @@ import { getStore } from '@netlify/blobs'
 import { createHash } from 'node:crypto'
 
 // Read-only feed for the owner's Bill App (Website section).
-// Guarded by a shared key set as ANSH_APP_KEY in Netlify env; the key lives only
-// in Netlify and inside the private app - never in this public repo.
+// Guarded by a shared key in the private app. Only its hash is published here.
 const json = (body, status = 200) => Response.json(body, {
   status,
   headers: {
@@ -29,7 +28,7 @@ async function dayCounts(store, days) {
 }
 
 export default async (req) => {
-  if (req.method === 'OPTIONS') return json(null, 204)
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'x-app-key', 'Access-Control-Allow-Methods': 'GET, OPTIONS' } })
   if (req.method !== 'GET') return json({ error: 'Method not allowed' }, 405)
   // Only the SHA-256 of the app key lives here (public repo). The key itself
   // is only inside the private Bill App APK; brute-forcing a 192-bit key is infeasible.
@@ -42,13 +41,15 @@ export default async (req) => {
   const sum7 = (c) => c.days.slice(-7).reduce((s, d) => s + d.count, 0)
 
   let enquiries = []
-  if (process.env.ANSH_NETLIFY_TOKEN) {
+  if (!process.env.ANSH_NETLIFY_TOKEN) return json({ error: 'Enquiry source not configured' }, 503)
+  {
     try {
       const formId = '6aba04887fc55e00076e6164'
       const res = await fetch(`https://api.netlify.com/api/v1/forms/${formId}/submissions?per_page=100`, {
         headers: { Authorization: `Bearer ${process.env.ANSH_NETLIFY_TOKEN}`, Accept: 'application/json' }
       })
-      if (res.ok) {
+      if (!res.ok) return json({ error: 'Enquiry source unavailable' }, 502)
+      {
         const rows = await res.json()
         if (Array.isArray(rows)) enquiries = rows.map(x => ({
           id: x.id, created_at: x.created_at,
@@ -56,7 +57,7 @@ export default async (req) => {
           interestType: x.data?.interestType || '', serviceType: x.data?.serviceType || '', message: x.data?.message || ''
         }))
       }
-    } catch { /* enquiries are best effort; visits and bookings still return */ }
+    } catch { return json({ error: 'Enquiry source unavailable' }, 502) }
   }
 
   const bookings = []

@@ -16,7 +16,7 @@ const json = (body, status = 200) => Response.json(body, {
 
 async function dayCounts(store, days) {
   const labels = []
-  for (let i = days - 1; i >= 0; i--) labels.push(new Date(Date.now() - i * 86400000).toISOString().slice(0, 10))
+  for (let i = days - 1; i >= 0; i--) labels.push(new Date(Date.now() + 19800000 - i * 86400000).toISOString().slice(0, 10))
   let total = 0
   const counts = []
   for (const day of labels) {

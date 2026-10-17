@@ -22,4 +22,18 @@
 <p>Please wait for our call before treating any service as booked.</p>
 <div class="cta"><a class="btn btn-g" href="/"><i class="fa-solid fa-house"></i> Back to home</a><a class="btn btn-w" href="https://wa.me/919819104977?text=Hi%20Ansh%20Air%20Cool%2C%20I%20just%20sent%20a%20booking%20request" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp us</a></div>
 </div></main>
+<script>
+// Visitor count (one per browser per day) + WhatsApp button tap count. Never blocks the site.
+if (location.hostname.endsWith('.netlify.app')) {
+  window.addEventListener('load', function () {
+    fetch('/.netlify/functions/visit', { method: 'POST', credentials: 'same-origin', keepalive: true }).catch(function () {});
+  }, { once: true });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
+    if (!a) return;
+    try { navigator.sendBeacon('/.netlify/functions/wa-click', new Blob([], { type: 'text/plain' })); }
+    catch (x) { fetch('/.netlify/functions/wa-click', { method: 'POST', keepalive: true }).catch(function () {}); }
+  }, true);
+}
+</script>
 </body></html>
